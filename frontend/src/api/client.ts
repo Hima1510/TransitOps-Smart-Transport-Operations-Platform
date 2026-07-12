@@ -12,6 +12,7 @@ async function request(url: string, options: RequestInit = {}) {
 
 export const api = {
   login: (email: string, password: string) => request('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }),
+  register: (name: string, email: string, password: string, role: string) => request('/auth/register', { method: 'POST', body: JSON.stringify({ name, email, password, role }) }),
   getKPIs: () => request('/dashboard/kpis'),
   getAttention: () => request('/dashboard/attention'),
   getFuelEfficiency: () => request('/dashboard/fuel-efficiency'),
