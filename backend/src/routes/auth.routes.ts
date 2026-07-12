@@ -5,6 +5,18 @@ import bcrypt from 'bcryptjs';
 
 const router = Router();
 
+function getPasswordHash(user: any): string | undefined {
+  if (!user) return undefined;
+  if (typeof user.password_hash === 'string') return user.password_hash;
+  if (typeof user.passwordHash === 'string') return user.passwordHash;
+  if (Array.isArray(user) && typeof user[3] === 'string') return user[3];
+  return undefined;
+}
+
+function pickUserField(user: any, key: string, index: number) {
+  return user?.[key] ?? user?.[index];
+}
+
 router.post('/login', (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -20,16 +32,93 @@ router.post('/login', (req: Request, res: Response) => {
       return;
     }
 
-    const valid = bcrypt.compareSync(password, user.password_hash);
+    const passwordHash = getPasswordHash(user);
+    if (!passwordHash) {
+      res.status(500).json({ error: 'User record is missing a password hash' });
+      return;
+    }
+
+    const valid = bcrypt.compareSync(password, passwordHash);
     if (!valid) {
       res.status(401).json({ error: 'Invalid credentials' });
       return;
     }
 
-    const token = signToken({ id: user.id, email: user.email, role: user.role, name: user.name });
+    const token = signToken({
+      id: user.id ?? user[0],
+      email: user.email ?? user[2],
+      role: user.role ?? user[4],
+      name: user.name ?? user[1],
+    });
     res.json({
       token,
-      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+      user: {
+        id: user.id ?? user[0],
+        name: user.name ?? user[1],
+        email: user.email ?? user[2],
+        role: user.role ?? user[4],
+      },
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post('/register', (req: Request, res: Response) => {
+  try {
+    const { name, email, password, role } = req.body;
+    if (!name || !email || !password || !role) {
+      res.status(400).json({ error: 'Name, email, password, and role are required' });
+      return;
+    }
+
+    const validRoles = ['fleet_manager', 'driver', 'safety_officer', 'financial_analyst'];
+    if (!validRoles.includes(role)) {
+      res.status(400).json({ error: 'Invalid role selected' });
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      res.status(400).json({ error: 'Invalid email address format' });
+      return;
+    }
+
+    if (password.length < 6) {
+      res.status(400).json({ error: 'Password must be at least 6 characters long' });
+    if (!name || !email || !password) {
+      res.status(400).json({ error: 'Name, email and password are required' });
+      return;
+    }
+
+    if (!role || role === 'select_role') {
+      res.status(400).json({ error: 'Role not selected' });
+      return;
+    }
+
+    const allowedRoles = ['fleet_manager', 'driver', 'safety_officer', 'financial_analyst'];
+    if (!allowedRoles.includes(role)) {
+      res.status(400).json({ error: 'Invalid role selected' });
+      return;
+    }
+
+    const db = getDb();
+    const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email) as any;
+    if (existing) {
+      res.status(409).json({ error: 'Email already registered' });
+      return;
+    }
+
+    const passwordHash = bcrypt.hashSync(password, 10);
+    const result = db.prepare(
+      'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)'
+    ).run(name, email, passwordHash, role);
+
+    const token = signToken({ id: result.lastInsertRowid, email, role, name });
+    
+    res.status(201).json({
+      token,
+      user: { id: result.lastInsertRowid, name, email, role }
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
