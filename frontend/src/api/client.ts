@@ -4,9 +4,18 @@ async function request(url: string, options: RequestInit = {}) {
   const token = localStorage.getItem('transitops_token');
   const headers: Record<string, string> = { 'Content-Type': 'application/json', ...(options.headers as Record<string, string> || {}) };
   if (token) headers['Authorization'] = `Bearer ${token}`;
+
   const res = await fetch(`${API_BASE}${url}`, { ...options, headers });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || `Request failed: ${res.status}`);
+  const contentType = res.headers.get('content-type') || '';
+  const isJson = contentType.includes('application/json');
+  const rawText = await res.text();
+  const data = rawText && isJson ? JSON.parse(rawText) : rawText ? { message: rawText } : {};
+
+  if (!res.ok) {
+    const message = typeof data === 'object' && data !== null && 'error' in data ? (data as any).error : (data as any).message || `Request failed: ${res.status}`;
+    throw new Error(message);
+  }
+
   return data;
 }
 
