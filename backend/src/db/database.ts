@@ -5,6 +5,7 @@ import path from 'path';
 const DB_PATH = path.join(__dirname, '..', '..', 'transitops.db');
 
 let rawDb: SqlJsDatabase;
+let shouldAutoSave = true;
 
 /**
  * Database wrapper that provides a better-sqlite3 compatible API
@@ -22,6 +23,9 @@ class DatabaseWrapper {
     return {
       run(...params: any[]) {
         db.run(sql, params);
+        if (shouldAutoSave) {
+          saveToDisk(db);
+        }
         return { changes: db.getRowsModified(), lastInsertRowid: getLastInsertRowId(db) };
       },
       get(...params: any[]) {
@@ -56,6 +60,7 @@ class DatabaseWrapper {
   transaction<T>(fn: () => T): () => T {
     const db = this.db;
     return () => {
+      shouldAutoSave = false;
       db.run('BEGIN');
       try {
         const result = fn();
@@ -65,6 +70,8 @@ class DatabaseWrapper {
       } catch (err) {
         db.run('ROLLBACK');
         throw err;
+      } finally {
+        shouldAutoSave = true;
       }
     };
   }
@@ -113,4 +120,11 @@ export function getDb(): DatabaseWrapper {
     throw new Error('Database not initialized. Call initDatabase() first.');
   }
   return wrapper;
+}
+
+export function persistDatabase(): void {
+  if (!rawDb) {
+    throw new Error('Database not initialized. Call initDatabase() first.');
+  }
+  saveToDisk(rawDb);
 }
