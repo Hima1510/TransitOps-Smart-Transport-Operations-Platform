@@ -41,7 +41,7 @@ Built for **[Hackathon Name] 2026**, TransitOps demonstrates how a lean, well-ar
   <img src="./screenshots/demo.gif" alt="TransitOps Demo" width="85%"/>
 </p>
 
-🎬 **Video Walkthrough:** [[add-your-video-link-here]](https://drive.google.com/file/d/1eyvuXQGLIdxAIR3wHtNlhl5yMDHB9XwY/view?usp=drive_link)
+🎬 **Video Walkthrough:** https://drive.google.com/file/d/1eyvuXQGLIdxAIR3wHtNlhl5yMDHB9XwY/view?usp=drive_link
 
 ---
 
