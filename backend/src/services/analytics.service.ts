@@ -1,15 +1,62 @@
 import { getDb } from '../db/database';
 
 export class AnalyticsService {
-  getDashboardKPIs() {
+  getDashboardKPIs(filters?: { type?: string; status?: string; region?: string }) {
     const db = getDb();
-    const totalVehicles = (db.prepare("SELECT COUNT(*) as count FROM vehicles WHERE status != 'Retired'").get() as any).count;
-    const availableVehicles = (db.prepare("SELECT COUNT(*) as count FROM vehicles WHERE status = 'Available'").get() as any).count;
-    const inMaintenance = (db.prepare("SELECT COUNT(*) as count FROM vehicles WHERE status = 'In Shop'").get() as any).count;
-    const onTrip = (db.prepare("SELECT COUNT(*) as count FROM vehicles WHERE status = 'On Trip'").get() as any).count;
-    const activeTrips = (db.prepare("SELECT COUNT(*) as count FROM trips WHERE status = 'Dispatched'").get() as any).count;
-    const pendingTrips = (db.prepare("SELECT COUNT(*) as count FROM trips WHERE status = 'Draft'").get() as any).count;
-    const driversOnDuty = (db.prepare("SELECT COUNT(*) as count FROM drivers WHERE status = 'On Trip'").get() as any).count;
+    
+    let vehicleWhere = "status != 'Retired'";
+    const vehicleParams: any[] = [];
+    if (filters?.type) {
+      vehicleWhere += " AND type = ?";
+      vehicleParams.push(filters.type);
+    }
+    if (filters?.status) {
+      vehicleWhere += " AND status = ?";
+      vehicleParams.push(filters.status);
+    }
+    if (filters?.region) {
+      vehicleWhere += " AND region = ?";
+      vehicleParams.push(filters.region);
+    }
+
+    const totalVehicles = (db.prepare(`SELECT COUNT(*) as count FROM vehicles WHERE ${vehicleWhere}`).get(...vehicleParams) as any).count;
+    const availableVehicles = (db.prepare(`SELECT COUNT(*) as count FROM vehicles WHERE ${vehicleWhere} AND status = 'Available'`).get(...vehicleParams) as any).count;
+    const inMaintenance = (db.prepare(`SELECT COUNT(*) as count FROM vehicles WHERE ${vehicleWhere} AND status = 'In Shop'`).get(...vehicleParams) as any).count;
+    const onTrip = (db.prepare(`SELECT COUNT(*) as count FROM vehicles WHERE ${vehicleWhere} AND status = 'On Trip'`).get(...vehicleParams) as any).count;
+
+    let tripWhere = "1=1";
+    const tripParams: any[] = [];
+    if (filters?.type) {
+      tripWhere += " AND v.type = ?";
+      tripParams.push(filters.type);
+    }
+    if (filters?.status) {
+      tripWhere += " AND v.status = ?";
+      tripParams.push(filters.status);
+    }
+    if (filters?.region) {
+      tripWhere += " AND v.region = ?";
+      tripParams.push(filters.region);
+    }
+
+    const activeTrips = (db.prepare(`
+      SELECT COUNT(*) as count FROM trips t 
+      JOIN vehicles v ON t.vehicle_id = v.id 
+      WHERE t.status = 'Dispatched' AND ${tripWhere}
+    `).get(...tripParams) as any).count;
+
+    const pendingTrips = (db.prepare(`
+      SELECT COUNT(*) as count FROM trips t 
+      JOIN vehicles v ON t.vehicle_id = v.id 
+      WHERE t.status = 'Draft' AND ${tripWhere}
+    `).get(...tripParams) as any).count;
+
+    const driversOnDuty = (db.prepare(`
+      SELECT COUNT(*) as count FROM drivers d 
+      JOIN trips t ON t.driver_id = d.id 
+      JOIN vehicles v ON t.vehicle_id = v.id 
+      WHERE t.status = 'Dispatched' AND ${tripWhere}
+    `).get(...tripParams) as any).count;
 
     return {
       totalVehicles, availableVehicles, inMaintenance, vehiclesOnTrip: onTrip,

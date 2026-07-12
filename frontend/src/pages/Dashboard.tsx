@@ -17,8 +17,29 @@ export default function Dashboard() {
   const [kpis, setKpis] = useState<any>(null);
   const [attention, setAttention] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingKPIs, setLoadingKPIs] = useState(false);
+  
+  const [type, setType] = useState('');
+  const [status, setStatus] = useState('');
+  const [region, setRegion] = useState('');
+
   useEffect(() => {
-    Promise.all([api.getKPIs(), api.getAttention()]).then(([k, a]) => { setKpis(k); setAttention(a); }).finally(() => setLoading(false));
+    setLoadingKPIs(true);
+    const params: Record<string, string> = {};
+    if (type) params.type = type;
+    if (status) params.status = status;
+    if (region) params.region = region;
+    
+    api.getKPIs(params)
+      .then(k => setKpis(k))
+      .finally(() => {
+        setLoadingKPIs(false);
+        setLoading(false);
+      });
+  }, [type, status, region]);
+
+  useEffect(() => {
+    api.getAttention().then(a => setAttention(a));
   }, []);
 
   if (loading) return (
@@ -45,18 +66,50 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="font-heading text-2xl font-bold text-white">
-          Fleet <span className="text-gradient">Dashboard</span>
-        </h1>
-        <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
-          Real-time overview of your transport operations
-        </p>
+      {/* Header & Filters */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 className="font-heading text-2xl font-bold text-white">
+            Fleet <span className="text-gradient">Dashboard</span>
+          </h1>
+          <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            Real-time overview of your transport operations
+          </p>
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-wrap items-center gap-3">
+          <div>
+            <select value={type} onChange={e => setType(e.target.value)} className="input-field py-2 text-xs cursor-pointer" style={{ minWidth: '130px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <option value="" style={{ background: '#0d1117', color: 'white' }}>All Vehicle Types</option>
+              <option value="Truck" style={{ background: '#0d1117', color: 'white' }}>Truck</option>
+              <option value="Van" style={{ background: '#0d1117', color: 'white' }}>Van</option>
+              <option value="Bus" style={{ background: '#0d1117', color: 'white' }}>Bus</option>
+              <option value="Car" style={{ background: '#0d1117', color: 'white' }}>Car</option>
+            </select>
+          </div>
+          <div>
+            <select value={status} onChange={e => setStatus(e.target.value)} className="input-field py-2 text-xs cursor-pointer" style={{ minWidth: '130px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <option value="" style={{ background: '#0d1117', color: 'white' }}>All Statuses</option>
+              <option value="Available" style={{ background: '#0d1117', color: 'white' }}>Available</option>
+              <option value="On Trip" style={{ background: '#0d1117', color: 'white' }}>On Trip</option>
+              <option value="In Shop" style={{ background: '#0d1117', color: 'white' }}>In Shop</option>
+            </select>
+          </div>
+          <div>
+            <select value={region} onChange={e => setRegion(e.target.value)} className="input-field py-2 text-xs cursor-pointer" style={{ minWidth: '130px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <option value="" style={{ background: '#0d1117', color: 'white' }}>All Regions</option>
+              <option value="North" style={{ background: '#0d1117', color: 'white' }}>North</option>
+              <option value="South" style={{ background: '#0d1117', color: 'white' }}>South</option>
+              <option value="West" style={{ background: '#0d1117', color: 'white' }}>West</option>
+              <option value="East" style={{ background: '#0d1117', color: 'white' }}>East</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 transition-opacity duration-200 ${loadingKPIs ? 'opacity-50' : 'opacity-100'}`}>
         {kpiCards.map(k => (
           <div key={k.label} className="glow-card p-5 hover:border-purple-500/20 transition-all">
             <div className="flex items-center justify-between mb-3">
