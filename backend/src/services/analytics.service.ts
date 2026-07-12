@@ -1,15 +1,62 @@
 import { getDb } from '../db/database';
 
 export class AnalyticsService {
-  getDashboardKPIs() {
+  getDashboardKPIs(filters?: { type?: string; status?: string; region?: string }) {
     const db = getDb();
-    const totalVehicles = (db.prepare("SELECT COUNT(*) as count FROM vehicles WHERE status != 'Retired'").get() as any).count;
-    const availableVehicles = (db.prepare("SELECT COUNT(*) as count FROM vehicles WHERE status = 'Available'").get() as any).count;
-    const inMaintenance = (db.prepare("SELECT COUNT(*) as count FROM vehicles WHERE status = 'In Shop'").get() as any).count;
-    const onTrip = (db.prepare("SELECT COUNT(*) as count FROM vehicles WHERE status = 'On Trip'").get() as any).count;
-    const activeTrips = (db.prepare("SELECT COUNT(*) as count FROM trips WHERE status = 'Dispatched'").get() as any).count;
-    const pendingTrips = (db.prepare("SELECT COUNT(*) as count FROM trips WHERE status = 'Draft'").get() as any).count;
-    const driversOnDuty = (db.prepare("SELECT COUNT(*) as count FROM drivers WHERE status = 'On Trip'").get() as any).count;
+    
+    let vehicleWhere = "status != 'Retired'";
+    const vehicleParams: any[] = [];
+    if (filters?.type) {
+      vehicleWhere += " AND type = ?";
+      vehicleParams.push(filters.type);
+    }
+    if (filters?.status) {
+      vehicleWhere += " AND status = ?";
+      vehicleParams.push(filters.status);
+    }
+    if (filters?.region) {
+      vehicleWhere += " AND region = ?";
+      vehicleParams.push(filters.region);
+    }
+
+    const totalVehicles = (db.prepare(`SELECT COUNT(*) as count FROM vehicles WHERE ${vehicleWhere}`).get(...vehicleParams) as any).count;
+    const availableVehicles = (db.prepare(`SELECT COUNT(*) as count FROM vehicles WHERE ${vehicleWhere} AND status = 'Available'`).get(...vehicleParams) as any).count;
+    const inMaintenance = (db.prepare(`SELECT COUNT(*) as count FROM vehicles WHERE ${vehicleWhere} AND status = 'In Shop'`).get(...vehicleParams) as any).count;
+    const onTrip = (db.prepare(`SELECT COUNT(*) as count FROM vehicles WHERE ${vehicleWhere} AND status = 'On Trip'`).get(...vehicleParams) as any).count;
+
+    let tripWhere = "1=1";
+    const tripParams: any[] = [];
+    if (filters?.type) {
+      tripWhere += " AND v.type = ?";
+      tripParams.push(filters.type);
+    }
+    if (filters?.status) {
+      tripWhere += " AND v.status = ?";
+      tripParams.push(filters.status);
+    }
+    if (filters?.region) {
+      tripWhere += " AND v.region = ?";
+      tripParams.push(filters.region);
+    }
+
+    const activeTrips = (db.prepare(`
+      SELECT COUNT(*) as count FROM trips t 
+      JOIN vehicles v ON t.vehicle_id = v.id 
+      WHERE t.status = 'Dispatched' AND ${tripWhere}
+    `).get(...tripParams) as any).count;
+
+    const pendingTrips = (db.prepare(`
+      SELECT COUNT(*) as count FROM trips t 
+      JOIN vehicles v ON t.vehicle_id = v.id 
+      WHERE t.status = 'Draft' AND ${tripWhere}
+    `).get(...tripParams) as any).count;
+
+    const driversOnDuty = (db.prepare(`
+      SELECT COUNT(*) as count FROM drivers d 
+      JOIN trips t ON t.driver_id = d.id 
+      JOIN vehicles v ON t.vehicle_id = v.id 
+      WHERE t.status = 'Dispatched' AND ${tripWhere}
+    `).get(...tripParams) as any).count;
 
     return {
       totalVehicles, availableVehicles, inMaintenance, vehiclesOnTrip: onTrip,
@@ -222,6 +269,59 @@ export class AnalyticsService {
       results.push({ date: dateStr, utilization: totalVehicles > 0 ? Math.round((tripsOnDay / totalVehicles) * 100) : 0 });
     }
     return results;
+  }
+
+  getSafetyOfficerDashboard() {
+    const db = getDb();
+    const today = new Date().toISOString().split('T')[0];
+    const thirtyDays = new Date(); thirtyDays.setDate(thirtyDays.getDate() + 30);
+    const thirtyDaysStr = thirtyDays.toISOString().split('T')[0];
+
+    const expiringLicenses = db.prepare('SELECT * FROM drivers WHERE license_expiry BETWEEN ? AND ? ORDER BY license_expiry ASC').all(today, thirtyDaysStr);
+    const atRiskDrivers = db.prepare('SELECT * FROM drivers WHERE safety_score < 70 OR status = "Suspended" ORDER BY safety_score ASC').all();
+    const overdueMaintenance = db.prepare(`
+      SELECT m.*, v.reg_number as vehicle_reg FROM maintenance m
+      LEFT JOIN vehicles v ON m.vehicle_id = v.id
+      WHERE m.status = 'open' AND m.opened_at < ? ORDER BY m.opened_at ASC
+    `).all(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
+    const activeTrips = db.prepare(`
+      SELECT t.id, t.source, t.destination, t.planned_distance_km, t.cargo_weight_kg, t.status,
+        v.reg_number as vehicle_reg, d.name as driver_name
+      FROM trips t
+      LEFT JOIN vehicles v ON t.vehicle_id = v.id
+      LEFT JOIN drivers d ON t.driver_id = d.id
+      WHERE t.status IN ('Dispatched', 'Completed')
+      ORDER BY t.created_at DESC
+    `).all();
+    const vehicleHold = db.prepare(`
+      SELECT m.id, m.description, m.cost, v.reg_number
+      FROM maintenance m
+      LEFT JOIN vehicles v ON m.vehicle_id = v.id
+      WHERE m.status = 'open'
+      ORDER BY m.opened_at DESC
+    `).all();
+
+    const complianceScore = Math.max(0, Math.min(100, Math.round(100 - (expiringLicenses.length * 8) - (atRiskDrivers.length * 5) - (overdueMaintenance.length * 3))));
+
+    const alerts = [
+      ...(expiringLicenses.length ? [{ type: 'license', title: 'Licenses expiring soon', message: `${expiringLicenses.length} drivers need license renewal in the next 30 days.`, path: '/drivers' }] : []),
+      ...(overdueMaintenance.length ? [{ type: 'maintenance', title: 'Maintenance overdue', message: `${overdueMaintenance.length} maintenance tasks are past due and should be reviewed immediately.`, path: '/maintenance' }] : []),
+      ...(atRiskDrivers.length ? [{ type: 'driver', title: 'Drivers below safety threshold', message: `${atRiskDrivers.length} drivers have safety scores under 70 or are suspended.`, path: '/drivers' }] : []),
+      ...(activeTrips.length ? [{ type: 'trip', title: 'Active trip coverage', message: `${activeTrips.filter((t: any) => t.status === 'Dispatched').length} trips are presently in progress.`, path: '/trips' }] : []),
+    ];
+
+    return {
+      summary: {
+        complianceScore,
+        expiringLicenses: expiringLicenses.length,
+        atRiskDrivers: atRiskDrivers.length,
+        overdueMaintenance: overdueMaintenance.length,
+      },
+      alerts,
+      drivers: atRiskDrivers.slice(0, 6),
+      vehicles: vehicleHold.slice(0, 6),
+      trips: activeTrips.slice(0, 6),
+    };
   }
 }
 
