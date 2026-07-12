@@ -33,4 +33,9 @@ router.get('/utilization-over-time', (req: Request, res: Response) => {
   catch (err: any) { res.status(500).json({ error: err.message }); }
 });
 
+router.get('/safety', (req: Request, res: Response) => {
+  try { res.json(analyticsService.getSafetyDashboard()); }
+  catch (err: any) { res.status(500).json({ error: err.message }); }
+});
+
 export default router;

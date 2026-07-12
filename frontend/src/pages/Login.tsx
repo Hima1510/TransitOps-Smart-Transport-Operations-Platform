@@ -3,21 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { api } from '../api/client';
-import { Truck, Shield, BarChart3, UserCircle, Sparkles } from 'lucide-react';
-
-const demoUsers = [
-  { label: 'Fleet Manager', email: 'fleet@transitops.io', icon: Truck, desc: 'Full platform access', gradient: 'linear-gradient(135deg, #155dfc, #2b7fff)' },
-  { label: 'Driver', email: 'driver@transitops.io', icon: UserCircle, desc: 'Trips & assigned vehicle', gradient: 'linear-gradient(135deg, #059669, #34d399)' },
-  { label: 'Safety Officer', email: 'safety@transitops.io', icon: Shield, desc: 'Compliance & licensing', gradient: 'linear-gradient(135deg, #d97706, #fbbf24)' },
-  { label: 'Financial Analyst', email: 'finance@transitops.io', icon: BarChart3, desc: 'Costs, fuel & ROI', gradient: 'linear-gradient(135deg, #9810fa, #c084fc)' },
-];
-
-const featureCards = [
-  { label: 'Live Tracking', x: -320, y: 80 },
-  { label: 'Route Planning', x: 320, y: 80 },
-  { label: 'Fleet Analytics', x: -240, y: 260 },
-  { label: 'AI Insights', x: 240, y: 260 },
-];
+import { Sparkles } from 'lucide-react';
 
 export default function Login() {
   const { login } = useAuth();
@@ -29,8 +15,11 @@ export default function Login() {
   const handleLogin = async (e?: React.FormEvent, overrideEmail?: string) => {
     e?.preventDefault();
     const loginEmail = overrideEmail || email;
-    const loginPassword = password || 'demo1234';
-    if (!loginEmail) return;
+    const loginPassword = password;
+    if (!loginEmail || !loginPassword) {
+      showToast('Email and password are required', 'error');
+      return;
+    }
     setLoading(true);
     try {
       const data = await api.login(loginEmail, loginPassword);
@@ -72,35 +61,6 @@ export default function Login() {
             <div className="orb-ring orb-ring-3"><div className="orb-electron" /></div>
           </div>
         </div>
-      </div>
-
-      {/* Feature labels (hidden on mobile) */}
-      <div className="hidden lg:block">
-        {featureCards.map(card => (
-          <div key={card.label}
-            className="absolute pointer-events-none"
-            style={{
-              left: `calc(50% + ${card.x}px)`,
-              top: `calc(38% + ${card.y}px)`,
-              transform: 'translate(-50%, -50%)',
-            }}>
-            <div style={{
-              padding: '6px 16px',
-              borderRadius: '100px',
-              border: '1px solid rgba(173,70,255,0.25)',
-              background: 'rgba(152,16,250,0.06)',
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 500,
-              fontSize: '10px',
-              letterSpacing: '1.5px',
-              textTransform: 'uppercase' as const,
-              color: 'rgba(255,255,255,0.7)',
-              backdropFilter: 'blur(8px)',
-            }}>
-              {card.label}
-            </div>
-          </div>
-        ))}
       </div>
 
       {/* Main Login Content */}
@@ -183,40 +143,16 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Demo Users */}
-        <div>
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15))' }} />
-            <p className="section-label text-center" style={{ fontSize: '10px' }}>Quick Demo Access</p>
-            <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to left, transparent, rgba(255,255,255,0.15))' }} />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            {demoUsers.map(u => (
-              <button key={u.email} onClick={() => handleLogin(undefined, u.email)}
-                className="flex items-center gap-3 p-3 rounded-xl transition-all group text-left"
-                style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
-                }}>
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
-                  style={{ background: u.gradient, boxShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
-                  <u.icon size={17} className="text-white" />
-                </div>
-                <div>
-                  <p className="text-white text-sm font-medium">{u.label}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px' }}>{u.desc}</p>
-                </div>
-              </button>
-            ))}
-          </div>
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15))' }} />
+          <p className="section-label text-center" style={{ fontSize: '10px' }}>Demo profile IDs</p>
+          <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to left, transparent, rgba(255,255,255,0.15))' }} />
+        </div>
+        <div className="flex flex-wrap justify-center gap-2">
+          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.72)', border: '1px solid rgba(255,255,255,0.08)' }}>fleet@transitops.io</span>
+          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.72)', border: '1px solid rgba(255,255,255,0.08)' }}>driver@transitops.io</span>
+          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.72)', border: '1px solid rgba(255,255,255,0.08)' }}>safety@transitops.io</span>
+          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.72)', border: '1px solid rgba(255,255,255,0.08)' }}>finance@transitops.io</span>
         </div>
       </div>
     </div>

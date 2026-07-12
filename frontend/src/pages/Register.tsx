@@ -3,20 +3,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { api } from '../api/client';
-import { Truck, Shield, BarChart3, UserCircle, Sparkles, User, Mail, Lock } from 'lucide-react';
+import { Sparkles, User, Mail, Lock, Truck, UserCircle, Shield, BarChart3 } from 'lucide-react';
 
 const roles = [
-  { value: 'fleet_manager', label: 'Fleet Manager', icon: Truck, desc: 'Full platform access', gradient: 'linear-gradient(135deg, #155dfc, #2b7fff)' },
-  { value: 'driver', label: 'Driver', icon: UserCircle, desc: 'Trips & vehicle logs', gradient: 'linear-gradient(135deg, #059669, #34d399)' },
-  { value: 'safety_officer', label: 'Safety Officer', icon: Shield, desc: 'Compliance & safety', gradient: 'linear-gradient(135deg, #d97706, #fbbf24)' },
-  { value: 'financial_analyst', label: 'Financial Analyst', icon: BarChart3, desc: 'Costs, fuel & ROI', gradient: 'linear-gradient(135deg, #9810fa, #c084fc)' },
-];
-
-const featureCards = [
-  { label: 'Live Tracking', x: -320, y: 80 },
-  { label: 'Route Planning', x: 320, y: 80 },
-  { label: 'Fleet Analytics', x: -240, y: 260 },
-  { label: 'AI Insights', x: 240, y: 260 },
+  { value: 'fleet_manager', label: 'Fleet Manager', desc: 'Full platform access', icon: Truck, gradient: 'linear-gradient(135deg, #155dfc, #2b7fff)' },
+  { value: 'driver', label: 'Driver', desc: 'Trips & assigned vehicle', icon: UserCircle, gradient: 'linear-gradient(135deg, #059669, #34d399)' },
+  { value: 'safety_officer', label: 'Safety Officer', desc: 'Compliance & licensing', icon: Shield, gradient: 'linear-gradient(135deg, #d97706, #fbbf24)' },
+  { value: 'financial_analyst', label: 'Financial Analyst', desc: 'Costs, fuel & ROI', icon: BarChart3, gradient: 'linear-gradient(135deg, #9810fa, #c084fc)' },
 ];
 
 export default function Register() {
@@ -88,38 +81,7 @@ export default function Register() {
         </div>
       </div>
 
-      {/* Feature labels (hidden on mobile) */}
-      <div className="hidden lg:block">
-        {featureCards.map(card => (
-          <div key={card.label}
-            className="absolute pointer-events-none"
-            style={{
-              left: `calc(50% + ${card.x}px)`,
-              top: `calc(30% + ${card.y}px)`,
-              transform: 'translate(-50%, -50%)',
-            }}>
-            <div style={{
-              padding: '6px 16px',
-              borderRadius: '100px',
-              border: '1px solid rgba(173,70,255,0.25)',
-              background: 'rgba(152,16,250,0.06)',
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 500,
-              fontSize: '10px',
-              letterSpacing: '1.5px',
-              textTransform: 'uppercase' as const,
-              color: 'rgba(255,255,255,0.7)',
-              backdropFilter: 'blur(8px)',
-            }}>
-              {card.label}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Main Content */}
-      <div className="w-full max-w-xl relative z-10" style={{ marginTop: '120px' }}>
-        {/* Badge */}
+      <div className="w-full max-w-md relative z-10" style={{ marginTop: '160px' }}>
         <div className="flex justify-center mb-6">
           <div className="flex items-center gap-2"
             style={{
