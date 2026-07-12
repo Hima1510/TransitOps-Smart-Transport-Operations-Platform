@@ -3,14 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { api } from '../api/client';
-import { Truck, Shield, BarChart3, UserCircle, Sparkles } from 'lucide-react';
-
-const featureCards = [
-  { label: 'Live Tracking', x: -320, y: 80 },
-  { label: 'Route Planning', x: 320, y: 80 },
-  { label: 'Fleet Analytics', x: -240, y: 260 },
-  { label: 'AI Insights', x: 240, y: 260 },
-];
+import { Sparkles } from 'lucide-react';
 
 export default function Register() {
   const { login } = useAuth();
@@ -72,34 +65,6 @@ export default function Register() {
             <div className="orb-ring orb-ring-3"><div className="orb-electron" /></div>
           </div>
         </div>
-      </div>
-
-      <div className="hidden lg:block">
-        {featureCards.map(card => (
-          <div key={card.label}
-            className="absolute pointer-events-none"
-            style={{
-              left: `calc(50% + ${card.x}px)`,
-              top: `calc(38% + ${card.y}px)`,
-              transform: 'translate(-50%, -50%)',
-            }}>
-            <div style={{
-              padding: '6px 16px',
-              borderRadius: '100px',
-              border: '1px solid rgba(173,70,255,0.25)',
-              background: 'rgba(152,16,250,0.06)',
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 500,
-              fontSize: '10px',
-              letterSpacing: '1.5px',
-              textTransform: 'uppercase' as const,
-              color: 'rgba(255,255,255,0.7)',
-              backdropFilter: 'blur(8px)',
-            }}>
-              {card.label}
-            </div>
-          </div>
-        ))}
       </div>
 
       <div className="w-full max-w-md relative z-10" style={{ marginTop: '160px' }}>
@@ -200,11 +165,6 @@ export default function Register() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-4 text-center">
-          <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15))' }} />
-          <span className="section-label" style={{ fontSize: '10px' }}>TRANSITOPS</span>
-          <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to left, transparent, rgba(255,255,255,0.15))' }} />
-        </div>
       </div>
     </div>
   );

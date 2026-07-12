@@ -108,6 +108,34 @@ The backend exposes REST endpoints under `/api`, including:
 
 Most routes are protected with JWT authentication.
 
+## Authentication
+
+TransitOps includes full authentication and access control support:
+
+- Secure login using email and password
+- JWT-based session handling
+- Role-Based Access Control (RBAC)
+- Protected frontend routes for authenticated users only
+- Protected backend APIs using token verification
+
+The system supports these roles:
+
+- `fleet_manager`
+- `driver`
+- `safety_officer`
+- `financial_analyst`
+
+Demo users are available through the seed data:
+
+- `fleet@transitops.io`
+- `driver@transitops.io`
+- `safety@transitops.io`
+- `finance@transitops.io`
+
+Password for all demo accounts:
+
+- `demo1234`
+
 ## Notes
 
 - The backend stores data in `backend/transitops.db`.
