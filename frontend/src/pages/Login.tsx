@@ -130,15 +130,15 @@ export default function Login() {
                 placeholder="••••••••" />
             </div>
             <button type="submit" disabled={loading}
-              className="btn btn-primary w-full py-3 text-base"
+              className="btn btn-primary w-full py-3 text-base cursor-pointer"
               style={{ borderRadius: '12px' }}>
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-          <div className="mt-4 text-center">
-            <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: '14px' }}>Need an account?</span>{' '}
-            <Link to="/register" style={{ color: '#2b7fff', fontWeight: 600 }}>
-              Create one
+          <div className="text-center mt-5">
+            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px' }}>New to TransitOps? </span>
+            <Link to="/register" className="text-gradient hover:underline font-semibold" style={{ fontSize: '14px' }}>
+              Create an Account
             </Link>
           </div>
         </div>
