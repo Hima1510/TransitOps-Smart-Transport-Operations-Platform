@@ -18,6 +18,129 @@ export class AnalyticsService {
     };
   }
 
+  getSafetyDashboard() {
+    const db = getDb();
+    const today = new Date().toISOString().split('T')[0];
+    const thirtyDays = new Date();
+    thirtyDays.setDate(thirtyDays.getDate() + 30);
+    const thirtyDaysStr = thirtyDays.toISOString().split('T')[0];
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const expiringLicenses = db.prepare(
+      `SELECT * FROM drivers WHERE license_expiry BETWEEN ? AND ? ORDER BY license_expiry ASC`
+    ).all(today, thirtyDaysStr) as any[];
+
+    const expiredLicenses = db.prepare(
+      `SELECT * FROM drivers WHERE license_expiry < ? ORDER BY license_expiry ASC`
+    ).all(today) as any[];
+
+    const highRiskDrivers = db.prepare(
+      `SELECT * FROM drivers WHERE safety_score < 70 ORDER BY safety_score ASC`
+    ).all() as any[];
+
+    const overdueMaintenance = db.prepare(`
+      SELECT m.*, v.reg_number as vehicle_reg, v.name_model
+      FROM maintenance m
+      LEFT JOIN vehicles v ON m.vehicle_id = v.id
+      WHERE m.status = 'open' AND m.opened_at < ?
+      ORDER BY m.opened_at ASC
+    `).all(sevenDaysAgo.toISOString()) as any[];
+
+    const activeTrips = db.prepare(`
+      SELECT t.*, v.reg_number as vehicle_reg, d.name as driver_name
+      FROM trips t
+      LEFT JOIN vehicles v ON t.vehicle_id = v.id
+      LEFT JOIN drivers d ON t.driver_id = d.id
+      WHERE t.status = 'Dispatched'
+      ORDER BY t.dispatched_at DESC, t.id DESC
+    `).all() as any[];
+
+    const vehiclesInShop = db.prepare(`
+      SELECT v.*, m.description, m.cost, m.opened_at
+      FROM vehicles v
+      LEFT JOIN maintenance m ON m.vehicle_id = v.id AND m.status = 'open'
+      WHERE v.status = 'In Shop'
+      ORDER BY v.reg_number ASC
+    `).all() as any[];
+
+    const totalDrivers = (db.prepare(`SELECT COUNT(*) as count FROM drivers`).get() as any).count;
+    const licensedDrivers = (db.prepare(`SELECT COUNT(*) as count FROM drivers WHERE license_expiry >= ?`).get(today) as any).count;
+    const safeDrivers = (db.prepare(`SELECT COUNT(*) as count FROM drivers WHERE safety_score >= 70`).get() as any).count;
+    const totalActiveVehicles = (db.prepare(`SELECT COUNT(*) as count FROM vehicles WHERE status != 'Retired'`).get() as any).count;
+    const safeVehicles = (db.prepare(`SELECT COUNT(*) as count FROM vehicles WHERE status IN ('Available', 'On Trip')`).get() as any).count;
+
+    const complianceScore = totalDrivers > 0
+      ? Math.round(((licensedDrivers + safeDrivers) / (totalDrivers * 2)) * 100)
+      : 0;
+
+    const alerts: any[] = [
+      ...expiredLicenses.map(driver => ({
+        type: 'license',
+        title: `Expired license: ${driver.name}`,
+        message: `License ${driver.license_number} expired on ${driver.license_expiry}`,
+        path: `/drivers/${driver.id}`,
+      })),
+      ...expiringLicenses.map(driver => ({
+        type: 'license',
+        title: `Expiring license: ${driver.name}`,
+        message: `License ${driver.license_number} expires on ${driver.license_expiry}`,
+        path: `/drivers/${driver.id}`,
+      })),
+      ...highRiskDrivers.map(driver => ({
+        type: 'driver',
+        title: `Low safety score: ${driver.name}`,
+        message: `Safety score is ${driver.safety_score}`,
+        path: `/drivers/${driver.id}`,
+      })),
+      ...overdueMaintenance.map(record => ({
+        type: 'maintenance',
+        title: `Overdue maintenance: ${record.vehicle_reg}`,
+        message: record.description,
+        path: `/maintenance`,
+      })),
+    ];
+
+    return {
+      summary: {
+        complianceScore,
+        expiringLicenses: expiringLicenses.length,
+        atRiskDrivers: highRiskDrivers.length,
+        overdueMaintenance: overdueMaintenance.length,
+        activeTrips: activeTrips.length,
+        vehiclesInShop: vehiclesInShop.length,
+        safeVehicles,
+        totalDrivers,
+        totalActiveVehicles,
+      },
+      alerts,
+      trips: activeTrips.map(trip => ({
+        id: trip.id,
+        source: trip.source,
+        destination: trip.destination,
+        planned_distance_km: trip.planned_distance_km,
+        cargo_weight_kg: trip.cargo_weight_kg,
+        driver_name: trip.driver_name,
+        vehicle_reg: trip.vehicle_reg,
+      })),
+      drivers: [...expiredLicenses, ...expiringLicenses, ...highRiskDrivers]
+        .filter((driver, index, arr) => arr.findIndex(d => d.id === driver.id) === index)
+        .map(driver => ({
+          id: driver.id,
+          name: driver.name,
+          safety_score: driver.safety_score,
+          status: driver.status,
+          license_expiry: driver.license_expiry,
+        })),
+      vehicles: vehiclesInShop.map(vehicle => ({
+        id: vehicle.id,
+        reg_number: vehicle.reg_number,
+        description: vehicle.description,
+        cost: vehicle.cost,
+      })),
+    };
+  }
+
   getAttentionItems() {
     const db = getDb();
     const today = new Date().toISOString().split('T')[0];
