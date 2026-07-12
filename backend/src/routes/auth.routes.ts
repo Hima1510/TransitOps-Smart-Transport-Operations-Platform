@@ -13,6 +13,10 @@ function getPasswordHash(user: any): string | undefined {
   return undefined;
 }
 
+function pickUserField(user: any, key: string, index: number) {
+  return user?.[key] ?? user?.[index];
+}
+
 router.post('/login', (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -82,15 +86,26 @@ router.post('/register', (req: Request, res: Response) => {
 
     if (password.length < 6) {
       res.status(400).json({ error: 'Password must be at least 6 characters long' });
+    if (!name || !email || !password) {
+      res.status(400).json({ error: 'Name, email and password are required' });
+      return;
+    }
+
+    if (!role || role === 'select_role') {
+      res.status(400).json({ error: 'Role not selected' });
+      return;
+    }
+
+    const allowedRoles = ['fleet_manager', 'driver', 'safety_officer', 'financial_analyst'];
+    if (!allowedRoles.includes(role)) {
+      res.status(400).json({ error: 'Invalid role selected' });
       return;
     }
 
     const db = getDb();
-    
-    // Check if user already exists
-    const existingUser = db.prepare('SELECT * FROM users WHERE email = ?').get(email) as any;
-    if (existingUser) {
-      res.status(400).json({ error: 'A user with this email already exists' });
+    const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email) as any;
+    if (existing) {
+      res.status(409).json({ error: 'Email already registered' });
       return;
     }
 
