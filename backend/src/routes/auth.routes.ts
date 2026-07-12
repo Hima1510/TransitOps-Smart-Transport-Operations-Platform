@@ -104,7 +104,7 @@ router.post('/register', (req: Request, res: Response) => {
     ).run(name, email, passwordHash, role);
 
     const token = signToken({ id: result.lastInsertRowid, email, role, name });
-    
+
     res.status(201).json({
       token,
       user: { id: result.lastInsertRowid, name, email, role }
