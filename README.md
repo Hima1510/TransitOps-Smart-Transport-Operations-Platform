@@ -1,10 +1,6 @@
 # 🚚 TransitOps — Smart Transport Operations Platform
 
 <p align="center">
-  <img src="./screenshots/banner.png" alt="TransitOps Banner" width="100%"/>
-</p>
-
-<p align="center">
   <img alt="React" src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white&style=flat-square"/>
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white&style=flat-square"/>
   <img alt="Express" src="https://img.shields.io/badge/Express.js-Backend-000000?logo=express&logoColor=white&style=flat-square"/>
