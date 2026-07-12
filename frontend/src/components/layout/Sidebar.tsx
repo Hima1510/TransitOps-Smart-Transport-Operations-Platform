@@ -16,8 +16,8 @@ export default function Sidebar() {
       }}>
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-30"
-        style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',
+      style={{
+          backgroundImage: 'var(--sidebar-grid)',
           backgroundSize: '48px 48px',
         }} />
 
@@ -29,10 +29,10 @@ export default function Sidebar() {
             <Truck size={20} className="text-white" />
           </div>
           <div>
-            <h1 className="font-heading text-white font-bold text-lg leading-tight">TransitOps</h1>
+            <h1 className="font-heading font-bold text-lg leading-tight" style={{ color: 'var(--sidebar-text)' }}>TransitOps</h1>
             <div className="flex items-center gap-1.5">
               <Sparkles size={10} style={{ color: '#9810fa' }} />
-              <p className="text-[10px] font-medium tracking-wider uppercase" style={{ color: 'rgba(152, 16, 250, 0.7)' }}>Smart Fleet Platform</p>
+              <p className="text-[10px] font-medium tracking-wider uppercase" style={{ color: 'rgba(152, 16, 250, 0.85)' }}>Smart Fleet Platform</p>
             </div>
           </div>
         </div>
@@ -53,13 +53,14 @@ export default function Sidebar() {
                 }`
               }
               style={({ isActive }) => isActive ? {
-                background: 'linear-gradient(135deg, rgba(21, 93, 252, 0.15), rgba(152, 16, 250, 0.1))',
+                background: 'var(--sidebar-icon-active-bg)',
                 borderLeft: '2px solid transparent',
                 borderImage: 'linear-gradient(to bottom, #2b7fff, #9810fa) 1',
                 boxShadow: '0 0 20px rgba(152, 16, 250, 0.06)',
-              } : {}}>
+                color: 'var(--sidebar-text)',
+              } : { color: 'var(--sidebar-muted)' }}>
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all`}
-                style={{ background: 'rgba(255,255,255,0.04)' }}>
+                style={{ background: 'var(--sidebar-icon-bg)' }}>
                 <Icon size={16} />
               </div>
               {item.label}
