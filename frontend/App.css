@@ -389,10 +389,10 @@ h2 {
 select {
   min-height: 38px;
   padding: 0 12px;
-  color: #f8fafc;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: #111827;
+  background: var(--bg-input);
 }
 
 .table-wrap {
