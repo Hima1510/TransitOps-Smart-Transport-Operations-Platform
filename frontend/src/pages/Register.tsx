@@ -149,7 +149,7 @@ export default function Register() {
                   </span>
                   <input type="text" value={name} onChange={e => setName(e.target.value)}
                     className="input-field pl-10"
-                    placeholder="John Doe" required />
+                    placeholder="Full Name" required />
                 </div>
               </div>
               <div>
@@ -160,7 +160,7 @@ export default function Register() {
                   </span>
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                     className="input-field pl-10"
-                    placeholder="john@company.com" required />
+                    placeholder="you@company.com" required />
                 </div>
               </div>
             </div>
