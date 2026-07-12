@@ -292,6 +292,9 @@
 }
 
 /* ---------- INPUT FIELDS ---------- */
+input,
+textarea,
+select,
 .input-field {
   width: 100%;
   padding: 10px 14px;
@@ -304,12 +307,25 @@
   transition: all 0.25s ease;
   outline: none;
 }
+
+input:focus,
+textarea:focus,
+select:focus,
 .input-field:focus {
   border-color: #2b7fff;
   box-shadow: 0 0 0 3px rgba(43, 127, 255, 0.15), 0 0 20px rgba(43, 127, 255, 0.06);
 }
-.input-field::placeholder { color: var(--text-muted); }
-.input-field option {
+
+input::placeholder,
+textarea::placeholder,
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+
+.input-field option,
+select.option,
+select.input-field option,
+select option {
   background-color: var(--bg-card-solid);
   color: var(--text-primary);
 }
