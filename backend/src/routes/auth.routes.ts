@@ -94,7 +94,6 @@ router.post('/register', (req: Request, res: Response) => {
       res.status(400).json({ error: 'Password must be at least 6 characters long' });
       return;
     }
-
     const db = getDb();
     
     // Check if user already exists
