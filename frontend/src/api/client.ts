@@ -37,6 +37,7 @@ export const api = {
   getCostBreakdown: () => request('/dashboard/cost-breakdown'),
   getROILeaderboard: () => request('/dashboard/roi-leaderboard'),
   getUtilizationOverTime: () => request('/dashboard/utilization-over-time'),
+  getSafetyDashboard: () => request('/dashboard/safety'),
   getVehicles: (p?: Record<string, string>) => request(`/vehicles${p ? '?' + new URLSearchParams(p) : ''}`),
   getVehicle: (id: number) => request(`/vehicles/${id}`),
   getVehicle360: (id: number) => request(`/vehicles/${id}/360`),
