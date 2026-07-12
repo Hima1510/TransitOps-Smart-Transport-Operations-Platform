@@ -16,12 +16,16 @@ export default function Register() {
   const { login } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '', role: 'fleet_manager' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '', role: 'select_role' });
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!form.name || !form.email || !form.password) return;
+    if (!form.role || form.role === 'select_role') {
+      showToast('Role not selected', 'error');
+      return;
+    }
     if (form.password !== form.confirmPassword) {
       showToast('Passwords do not match', 'error');
       return;
@@ -152,7 +156,7 @@ export default function Register() {
               <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Full Name</label>
               <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
                 className="input-field"
-                placeholder="Alex Morgan" required />
+                placeholder="Full Name" required />
             </div>
             <div>
               <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email</label>
@@ -163,6 +167,7 @@ export default function Register() {
             <div>
               <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Role</label>
               <select value={form.role} onChange={e => setForm({ ...form, role: e.target.value })} className="input-field" required>
+                <option value="select_role">Select Role</option>
                 <option value="fleet_manager">Fleet Manager</option>
                 <option value="driver">Driver</option>
                 <option value="safety_officer">Safety Officer</option>
