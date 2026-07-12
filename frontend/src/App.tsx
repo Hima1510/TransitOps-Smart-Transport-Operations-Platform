@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom
 import { useAuth } from './context/AuthContext';
 import Sidebar from './components/layout/Sidebar';
 import TopBar from './components/layout/TopBar';
+import Footer from './components/layout/Footer';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -23,8 +24,11 @@ function ProtectedLayout() {
       <Sidebar />
       <div className="flex-1 ml-[260px] flex flex-col">
         <TopBar />
-        <main className="flex-1 p-6 overflow-auto bg-app">
-          <Outlet />
+        <main className="flex-1 p-6 overflow-auto bg-app flex flex-col justify-between">
+          <div className="flex-1">
+            <Outlet />
+          </div>
+          <Footer />
         </main>
       </div>
     </div>
