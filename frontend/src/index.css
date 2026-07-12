@@ -577,3 +577,10 @@ select.input-field {
   .orb-ring-1, .orb-ring-2, .orb-ring-3 { animation: none; }
   .stat-value { animation: none; }
 }
+
+/* ---------- SELECT OPTION DROPDOWN STYLES ---------- */
+select.input-field option,
+select option {
+  background-color: #0d1117 !important;
+  color: #f1f5f9 !important;
+}

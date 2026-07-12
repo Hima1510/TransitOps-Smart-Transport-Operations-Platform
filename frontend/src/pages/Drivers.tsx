@@ -47,7 +47,7 @@ export default function Drivers() {
       <div className="flex gap-3 flex-wrap">
         <div className="relative flex-1 min-w-[200px]">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.3)' }} />
-          <input className="input-field pl-9" placeholder="Search drivers..." value={search} onChange={e => setSearch(e.target.value)} style={{ borderRadius: '100px' }} />
+          <input className="input-field" placeholder="Search drivers..." value={search} onChange={e => setSearch(e.target.value)} style={{ borderRadius: '100px', paddingLeft: '38px' }} />
         </div>
         <select className="input-field w-auto" value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ borderRadius: '100px', minWidth: 130 }}>
           <option value="">All Status</option><option>Available</option><option>On Trip</option><option>Off Duty</option><option>Suspended</option>
