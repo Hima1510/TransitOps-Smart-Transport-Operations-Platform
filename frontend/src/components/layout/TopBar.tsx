@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Sun, Moon, Search, Bell } from 'lucide-react';
+import { Sun, Moon, Bell } from 'lucide-react';
 
 export default function TopBar() {
   const [dark, setDark] = useState(true);
@@ -29,11 +29,10 @@ export default function TopBar() {
       }}>
       <div className="flex items-center gap-3 flex-1">
         <div className="relative max-w-md flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.3)' }} />
           <input
             type="text"
             placeholder="Search vehicles, drivers, trips..."
-            className="input-field pl-9 text-sm"
+            className="input-field text-sm"
             style={{
               background: 'rgba(255,255,255,0.04)',
               borderColor: 'rgba(255,255,255,0.06)',
