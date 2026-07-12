@@ -1,12 +1,12 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { getNavItems } from '../../utils/helpers';
-import { LayoutDashboard, Truck, Users, Route, Wrench, Fuel, BarChart3, LogOut, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Truck, Users, Route, Wrench, Fuel, BarChart3, Sparkles } from 'lucide-react';
 
 const iconMap: Record<string, any> = { LayoutDashboard, Truck, Users, Route, Wrench, Fuel, BarChart3 };
 
 export default function Sidebar() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navItems = getNavItems(user?.role || '');
   return (
     <aside className="fixed left-0 top-0 h-full w-[260px] flex flex-col z-50"
@@ -81,13 +81,6 @@ export default function Sidebar() {
             <p className="text-[11px] capitalize" style={{ color: 'var(--text-muted)' }}>{user?.role?.replace('_', ' ')}</p>
           </div>
         </div>
-        <button onClick={logout}
-          className="flex items-center gap-2 text-sm transition-colors w-full px-2 py-2 rounded-lg hover:bg-red-500/10"
-          style={{ color: 'var(--text-muted)' }}
-          onMouseEnter={e => (e.currentTarget.style.color = '#f87171')}
-          onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}>
-          <LogOut size={15} /> Sign Out
-        </button>
       </div>
     </aside>
   );

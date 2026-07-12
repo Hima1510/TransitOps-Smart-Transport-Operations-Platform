@@ -80,29 +80,29 @@ export default function Dashboard() {
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-3">
           <div>
-            <select value={type} onChange={e => setType(e.target.value)} className="input-field py-2 text-xs cursor-pointer" style={{ minWidth: '130px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <option value="" style={{ background: '#0d1117', color: 'white' }}>All Vehicle Types</option>
-              <option value="Truck" style={{ background: '#0d1117', color: 'white' }}>Truck</option>
-              <option value="Van" style={{ background: '#0d1117', color: 'white' }}>Van</option>
-              <option value="Bus" style={{ background: '#0d1117', color: 'white' }}>Bus</option>
-              <option value="Car" style={{ background: '#0d1117', color: 'white' }}>Car</option>
+            <select value={type} onChange={e => setType(e.target.value)} className="input-field py-2 text-xs cursor-pointer" style={{ minWidth: '130px', background: 'var(--bg-card-solid)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
+              <option value="" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>All Vehicle Types</option>
+              <option value="Truck" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>Truck</option>
+              <option value="Van" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>Van</option>
+              <option value="Bus" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>Bus</option>
+              <option value="Car" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>Car</option>
             </select>
           </div>
           <div>
-            <select value={status} onChange={e => setStatus(e.target.value)} className="input-field py-2 text-xs cursor-pointer" style={{ minWidth: '130px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <option value="" style={{ background: '#0d1117', color: 'white' }}>All Statuses</option>
-              <option value="Available" style={{ background: '#0d1117', color: 'white' }}>Available</option>
-              <option value="On Trip" style={{ background: '#0d1117', color: 'white' }}>On Trip</option>
-              <option value="In Shop" style={{ background: '#0d1117', color: 'white' }}>In Shop</option>
+            <select value={status} onChange={e => setStatus(e.target.value)} className="input-field py-2 text-xs cursor-pointer" style={{ minWidth: '130px', background: 'var(--bg-card-solid)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
+              <option value="" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>All Statuses</option>
+              <option value="Available" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>Available</option>
+              <option value="On Trip" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>On Trip</option>
+              <option value="In Shop" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>In Shop</option>
             </select>
           </div>
           <div>
-            <select value={region} onChange={e => setRegion(e.target.value)} className="input-field py-2 text-xs cursor-pointer" style={{ minWidth: '130px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <option value="" style={{ background: '#0d1117', color: 'white' }}>All Regions</option>
-              <option value="North" style={{ background: '#0d1117', color: 'white' }}>North</option>
-              <option value="South" style={{ background: '#0d1117', color: 'white' }}>South</option>
-              <option value="West" style={{ background: '#0d1117', color: 'white' }}>West</option>
-              <option value="East" style={{ background: '#0d1117', color: 'white' }}>East</option>
+            <select value={region} onChange={e => setRegion(e.target.value)} className="input-field py-2 text-xs cursor-pointer" style={{ minWidth: '130px', background: 'var(--bg-card-solid)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
+              <option value="" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>All Regions</option>
+              <option value="North" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>North</option>
+              <option value="South" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>South</option>
+              <option value="West" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>West</option>
+              <option value="East" style={{ background: 'var(--bg-card-solid)', color: 'var(--text-primary)' }}>East</option>
             </select>
           </div>
         </div>

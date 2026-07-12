@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Sun, Moon, Bell } from 'lucide-react';
+import { Sun, Moon, Bell, LogOut } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 export default function TopBar() {
   const [dark, setDark] = useState(false);
+  const { logout } = useAuth();
 
   useEffect(() => {
     const saved = localStorage.getItem('transitops_theme');
@@ -56,6 +58,15 @@ export default function TopBar() {
           <Bell size={17} style={{ color: 'var(--text-secondary)' }} />
           <span className="absolute top-2 right-2 w-2 h-2 rounded-full"
             style={{ background: '#9810fa', boxShadow: '0 0 6px rgba(152,16,250,0.5)' }} />
+        </button>
+        <button
+          onClick={logout}
+          className="p-2.5 rounded-xl transition-colors"
+          style={{ background: 'rgba(127,127,127,0.08)' }}
+          onMouseEnter={e => (e.currentTarget.style.background = 'rgba(127,127,127,0.12)')}
+          onMouseLeave={e => (e.currentTarget.style.background = 'rgba(127,127,127,0.08)')}
+          title="Sign out">
+          <LogOut size={17} style={{ color: 'var(--text-secondary)' }} />
         </button>
         <button
           onClick={() => setDark(!dark)}
