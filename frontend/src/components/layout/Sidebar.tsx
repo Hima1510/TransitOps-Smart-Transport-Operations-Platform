@@ -13,8 +13,6 @@ export default function Sidebar() {
       style={{
         background: 'var(--bg-sidebar)',
         borderRight: '1px solid var(--border-color)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
       }}>
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-30"
@@ -49,9 +47,9 @@ export default function Sidebar() {
             <NavLink key={item.path} to={item.path} end={item.path === '/'}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
-                isActive
-                    ? ''
-                    : ''
+                  isActive
+                    ? 'text-primary-color'
+                    : 'text-secondary-color hover:text-primary-color'
                 }`
               }
               style={({ isActive }) => isActive ? {
@@ -73,21 +71,21 @@ export default function Sidebar() {
 
       {/* User Section */}
       <div className="relative px-4 py-4" style={{ borderTop: '1px solid var(--border-color)' }}>
-        <div className="flex items-center gap-3 mb-3 p-2 rounded-xl" style={{ background: 'rgba(127, 127, 127, 0.08)' }}>
+        <div className="flex items-center gap-3 mb-3 p-2 rounded-xl" style={{ background: 'var(--bg-input)' }}>
           <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold"
             style={{ background: 'linear-gradient(135deg, #2b7fff, #9810fa)', boxShadow: '0 2px 10px rgba(152, 16, 250, 0.25)' }}>
             {user?.name?.charAt(0)}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate" style={{ color: 'var(--sidebar-text)' }}>{user?.name}</p>
-            <p className="text-[11px] capitalize" style={{ color: 'var(--sidebar-subtle)' }}>{user?.role?.replace('_', ' ')}</p>
+            <p className="text-sm font-medium truncate" style={{ color: 'var(--text-primary)' }}>{user?.name}</p>
+            <p className="text-[11px] capitalize" style={{ color: 'var(--text-muted)' }}>{user?.role?.replace('_', ' ')}</p>
           </div>
         </div>
         <button onClick={logout}
           className="flex items-center gap-2 text-sm transition-colors w-full px-2 py-2 rounded-lg hover:bg-red-500/10"
-          style={{ color: 'var(--sidebar-subtle)' }}
+          style={{ color: 'var(--text-muted)' }}
           onMouseEnter={e => (e.currentTarget.style.color = '#f87171')}
-          onMouseLeave={e => (e.currentTarget.style.color = 'var(--sidebar-subtle)')}>
+          onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}>
           <LogOut size={15} /> Sign Out
         </button>
       </div>

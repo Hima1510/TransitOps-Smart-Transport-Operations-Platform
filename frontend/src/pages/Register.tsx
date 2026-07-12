@@ -105,7 +105,7 @@ export default function Register() {
 
         {/* Title */}
         <div className="text-center mb-6">
-          <h1 className="font-heading text-3xl font-bold text-white mb-2">
+          <h1 className="font-heading text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
             Create your <span className="text-gradient">TransitOps</span> Account
           </h1>
           <p style={{
@@ -128,7 +128,7 @@ export default function Register() {
           border: '1px solid rgba(15,23,42,0.08)',
           borderRadius: '20px',
           padding: '28px',
-          boxShadow: '0 25px 50px rgba(0,0,0,0.4), 0 0 60px rgba(152,16,250,0.04)',
+          boxShadow: 'var(--shadow-lg)',
           marginBottom: '20px',
         }}>
           <form onSubmit={handleRegister} className="space-y-4">

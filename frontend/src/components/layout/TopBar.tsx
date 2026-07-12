@@ -34,7 +34,7 @@ export default function TopBar() {
           <input
             type="text"
             placeholder="Search vehicles, drivers, trips..."
-            className="input-field pl-9 text-sm"
+            className="input-field pl-11 pr-4 text-sm"
             style={{
               background: 'var(--bg-card-solid)',
               borderColor: 'var(--border-color)',
