@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { api } from '../api/client';
 import { Truck, Shield, BarChart3, UserCircle } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 const demoUsers = [
   { label: 'Fleet Manager', email: 'fleet@transitops.io', icon: Truck, desc: 'Full platform access', color: 'from-blue-500 to-blue-700' },
@@ -36,11 +37,13 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%)' }}>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 mb-4 shadow-lg shadow-blue-500/30"><Truck size={32} className="text-white" /></div>
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-[28px] bg-slate-950/80 border border-white/10 mb-4 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.9)]">
+            <img src={logo} alt="TransitOps logo" className="w-14 h-14 object-contain" />
+          </div>
           <h1 className="text-3xl font-bold text-white mb-2">TransitOps</h1>
           <p className="text-blue-200/70 text-sm max-w-xs mx-auto">One system of record for vehicles, drivers, trips, maintenance, and money — with guardrails baked in.</p>
         </div>
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-7 shadow-2xl mb-6">
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-7 shadow-2xl mb-6">
           <h2 className="text-white font-semibold text-lg mb-5">Sign in to your account</h2>
           <form onSubmit={handleLogin} className="space-y-4">
             <div><label className="block text-blue-200/80 text-sm mb-1.5">Email</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full px-4 py-2.5 rounded-lg bg-white/10 border border-white/20 text-white placeholder-blue-200/40 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-all" placeholder="you@company.com" /></div>
