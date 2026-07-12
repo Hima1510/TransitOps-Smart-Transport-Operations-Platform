@@ -35,17 +35,35 @@ export default function Vehicles() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between"><div><h1 className="text-2xl font-bold text-primary-color">Vehicle Registry</h1><p className="text-secondary-color text-sm mt-1">{vehicles.length} vehicles</p></div><button className="btn btn-primary" onClick={openAdd}><Plus size={16} />Add Vehicle</button></div>
-      <div className="flex gap-3 flex-wrap">
-        <div className="relative flex-1 min-w-[200px]"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-color" /><input className="input-field pl-9" placeholder="Search vehicles..." value={search} onChange={e => setSearch(e.target.value)} /></div>
-        <select className="input-field w-auto" value={filterType} onChange={e => setFilterType(e.target.value)}><option value="">All Types</option><option>Truck</option><option>Van</option><option>Bus</option><option>Car</option></select>
-        <select className="input-field w-auto" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}><option value="">All Status</option><option>Available</option><option>On Trip</option><option>In Shop</option><option>Retired</option></select>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="font-heading text-2xl font-bold text-white">
+            Vehicle <span className="text-gradient">Registry</span>
+          </h1>
+          <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>{vehicles.length} vehicles</p>
+        </div>
+        <button className="btn btn-primary" onClick={openAdd}><Plus size={16} />Add Vehicle</button>
       </div>
+
+      <div className="flex gap-3 flex-wrap">
+        <div className="relative flex-1 min-w-[200px]">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.3)' }} />
+          <input className="input-field pl-9" placeholder="Search vehicles..." value={search} onChange={e => setSearch(e.target.value)} style={{ borderRadius: '100px' }} />
+        </div>
+        <select className="input-field w-auto" value={filterType} onChange={e => setFilterType(e.target.value)} style={{ borderRadius: '100px', minWidth: 130 }}>
+          <option value="">All Types</option><option>Truck</option><option>Van</option><option>Bus</option><option>Car</option>
+        </select>
+        <select className="input-field w-auto" value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ borderRadius: '100px', minWidth: 130 }}>
+          <option value="">All Status</option><option>Available</option><option>On Trip</option><option>In Shop</option><option>Retired</option>
+        </select>
+      </div>
+
       <div className="card overflow-hidden">
-        <table className="data-table"><thead><tr><th>Reg #</th><th>Model</th><th>Type</th><th>Max Load</th><th>Odometer</th><th>Status</th><th>Cost</th></tr></thead>
-          <tbody>{loading ? <tr><td colSpan={7} className="text-center py-8 text-secondary-color">Loading...</td></tr> : vehicles.map(v => (
+        <table className="data-table">
+          <thead><tr><th>Reg #</th><th>Model</th><th>Type</th><th>Max Load</th><th>Odometer</th><th>Status</th><th>Cost</th></tr></thead>
+          <tbody>{loading ? <tr><td colSpan={7} className="text-center py-8" style={{ color: 'rgba(255,255,255,0.4)' }}>Loading...</td></tr> : vehicles.map(v => (
             <tr key={v.id} className="clickable" onClick={() => nav(`/vehicles/${v.id}`)}>
-              <td className="font-semibold text-primary-500">{v.reg_number}</td><td>{v.name_model}</td><td>{v.type}</td>
+              <td className="font-semibold text-gradient">{v.reg_number}</td><td>{v.name_model}</td><td>{v.type}</td>
               <td>{formatNumber(v.max_load_kg)} kg</td><td>{formatNumber(v.odometer)} km</td>
               <td><span className={`badge ${getStatusBadgeClass(v.status)}`}>{v.status}</span></td>
               <td>{formatCurrency(v.acquisition_cost)}</td>
@@ -53,20 +71,25 @@ export default function Vehicles() {
           ))}</tbody>
         </table>
       </div>
+
       {showDrawer && (
-        <><div className="drawer-overlay" onClick={() => setShowDrawer(false)} />
+        <>
+          <div className="drawer-overlay" onClick={() => setShowDrawer(false)} />
           <div className="drawer-content">
-            <div className="flex items-center justify-between mb-6"><h2 className="text-lg font-semibold text-primary-color">{editing ? 'Edit Vehicle' : 'Add Vehicle'}</h2><button onClick={() => setShowDrawer(false)} className="p-2 hover:bg-surface-100 dark:hover:bg-surface-700 rounded-lg"><X size={18} /></button></div>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-white font-heading">{editing ? 'Edit Vehicle' : 'Add Vehicle'}</h2>
+              <button onClick={() => setShowDrawer(false)} className="p-2 rounded-lg transition-colors" style={{ background: 'rgba(255,255,255,0.04)' }}><X size={18} style={{ color: 'rgba(255,255,255,0.5)' }} /></button>
+            </div>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div><label className="block text-sm font-medium text-secondary-color mb-1">Registration Number</label><input className="input-field" value={form.reg_number} onChange={e => setForm({...form, reg_number: e.target.value})} required /></div>
-              <div><label className="block text-sm font-medium text-secondary-color mb-1">Model</label><input className="input-field" value={form.name_model} onChange={e => setForm({...form, name_model: e.target.value})} required /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Registration Number</label><input className="input-field" value={form.reg_number} onChange={e => setForm({...form, reg_number: e.target.value})} required /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Model</label><input className="input-field" value={form.name_model} onChange={e => setForm({...form, name_model: e.target.value})} required /></div>
               <div className="grid grid-cols-2 gap-3">
-                <div><label className="block text-sm font-medium text-secondary-color mb-1">Type</label><select className="input-field" value={form.type} onChange={e => setForm({...form, type: e.target.value})}><option>Truck</option><option>Van</option><option>Bus</option><option>Car</option></select></div>
-                <div><label className="block text-sm font-medium text-secondary-color mb-1">Region</label><select className="input-field" value={form.region} onChange={e => setForm({...form, region: e.target.value})}><option>North</option><option>South</option><option>East</option><option>West</option></select></div>
+                <div><label className="block text-sm font-medium mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Type</label><select className="input-field" value={form.type} onChange={e => setForm({...form, type: e.target.value})}><option>Truck</option><option>Van</option><option>Bus</option><option>Car</option></select></div>
+                <div><label className="block text-sm font-medium mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Region</label><select className="input-field" value={form.region} onChange={e => setForm({...form, region: e.target.value})}><option>North</option><option>South</option><option>East</option><option>West</option></select></div>
               </div>
-              <div><label className="block text-sm font-medium text-secondary-color mb-1">Max Load (kg)</label><input type="number" className="input-field" value={form.max_load_kg} onChange={e => setForm({...form, max_load_kg: e.target.value})} required /></div>
-              <div><label className="block text-sm font-medium text-secondary-color mb-1">Odometer (km)</label><input type="number" className="input-field" value={form.odometer} onChange={e => setForm({...form, odometer: e.target.value})} /></div>
-              <div><label className="block text-sm font-medium text-secondary-color mb-1">Acquisition Cost (₹)</label><input type="number" className="input-field" value={form.acquisition_cost} onChange={e => setForm({...form, acquisition_cost: e.target.value})} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Max Load (kg)</label><input type="number" className="input-field" value={form.max_load_kg} onChange={e => setForm({...form, max_load_kg: e.target.value})} required /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Odometer (km)</label><input type="number" className="input-field" value={form.odometer} onChange={e => setForm({...form, odometer: e.target.value})} /></div>
+              <div><label className="block text-sm font-medium mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Acquisition Cost (₹)</label><input type="number" className="input-field" value={form.acquisition_cost} onChange={e => setForm({...form, acquisition_cost: e.target.value})} /></div>
               <div className="flex gap-3 pt-2"><button type="submit" className="btn btn-primary flex-1">{editing ? 'Update' : 'Add Vehicle'}</button><button type="button" onClick={() => setShowDrawer(false)} className="btn btn-secondary">Cancel</button></div>
             </form>
           </div>

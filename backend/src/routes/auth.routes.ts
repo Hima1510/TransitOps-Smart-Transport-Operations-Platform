@@ -36,4 +36,44 @@ router.post('/login', (req: Request, res: Response) => {
   }
 });
 
+router.post('/register', (req: Request, res: Response) => {
+  try {
+    const { name, email, password, role } = req.body;
+    if (!name || !email || !password || !role) {
+      res.status(400).json({ error: 'Name, email, password and role are required' });
+      return;
+    }
+
+    const validRoles = ['fleet_manager', 'driver', 'safety_officer', 'financial_analyst'];
+    if (!validRoles.includes(role)) {
+      res.status(400).json({ error: `Invalid role. Must be one of: ${validRoles.join(', ')}` });
+      return;
+    }
+
+    const db = getDb();
+
+    // Check if email already exists
+    const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email) as any;
+    if (existing) {
+      res.status(409).json({ error: 'An account with this email already exists' });
+      return;
+    }
+
+    const password_hash = bcrypt.hashSync(password, 10);
+    const result = db.prepare(
+      'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)'
+    ).run(name, email, password_hash, role);
+
+    const userId = result.lastInsertRowid;
+
+    const token = signToken({ id: userId, email, role, name });
+    res.status(201).json({
+      token,
+      user: { id: userId, name, email, role },
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;
