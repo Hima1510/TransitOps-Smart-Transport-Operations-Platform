@@ -49,7 +49,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-      style={{ background: '#010509' }}>
+      style={{ background: 'var(--bg-primary)' }}>
 
       {/* Grid pattern */}
       <div className="absolute inset-0 pointer-events-none"
@@ -105,14 +105,14 @@ export default function Register() {
 
         {/* Title */}
         <div className="text-center mb-6">
-          <h1 className="font-heading text-3xl font-bold text-white mb-2">
+          <h1 className="font-heading text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
             Create your <span className="text-gradient">TransitOps</span> Account
           </h1>
           <p style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: '14px',
             lineHeight: '22px',
-            color: 'rgba(255,255,255,0.5)',
+            color: 'var(--text-secondary)',
             maxWidth: '420px',
             margin: '0 auto',
           }}>
@@ -122,19 +122,19 @@ export default function Register() {
 
         {/* Card */}
         <div style={{
-          background: 'rgba(255,255,255,0.04)',
+          background: 'var(--bg-card)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255,255,255,0.08)',
+          border: '1px solid var(--border-color)',
           borderRadius: '20px',
           padding: '28px',
-          boxShadow: '0 25px 50px rgba(0,0,0,0.4), 0 0 60px rgba(152,16,250,0.04)',
+          boxShadow: 'var(--shadow-lg)',
           marginBottom: '20px',
         }}>
           <form onSubmit={handleRegister} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Full Name</label>
+                <label className="block text-sm mb-1.5" style={{ color: 'var(--text-secondary)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Full Name</label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
                     <User size={16} />
@@ -145,7 +145,7 @@ export default function Register() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email Address</label>
+                <label className="block text-sm mb-1.5" style={{ color: 'var(--text-secondary)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email Address</label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
                     <Mail size={16} />
@@ -158,7 +158,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Password</label>
+              <label className="block text-sm mb-1.5" style={{ color: 'var(--text-secondary)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Password</label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
                   <Lock size={16} />
@@ -170,7 +170,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="block text-sm mb-2" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Select Your Role</label>
+              <label className="block text-sm mb-2" style={{ color: 'var(--text-secondary)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Select Your Role</label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {roles.map(r => (
                   <button key={r.value} type="button" onClick={() => setRole(r.value)}
@@ -187,8 +187,8 @@ export default function Register() {
                       <r.icon size={17} className="text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-white text-sm font-medium">{r.label}</p>
-                      <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px' }} className="truncate">{r.desc}</p>
+                      <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{r.label}</p>
+                      <p style={{ color: 'var(--text-muted)', fontSize: '11px' }} className="truncate">{r.desc}</p>
                     </div>
                   </button>
                 ))}
@@ -203,7 +203,7 @@ export default function Register() {
           </form>
 
           <div className="text-center mt-5">
-            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px' }}>Already have an account? </span>
+            <span style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Already have an account? </span>
             <Link to="/login" className="text-gradient hover:underline font-semibold" style={{ fontSize: '14px' }}>
               Sign In
             </Link>

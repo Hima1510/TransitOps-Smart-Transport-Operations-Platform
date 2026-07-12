@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Sidebar from './components/layout/Sidebar';
 import TopBar from './components/layout/TopBar';
+import Footer from './components/layout/Footer';
 import Footer from './components/layout/Footer';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -42,6 +44,15 @@ function HomePage() {
 
 export default function App() {
   const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('transitops_theme');
+    const isDark = savedTheme ? savedTheme === 'dark' : true;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
