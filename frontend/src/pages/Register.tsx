@@ -149,7 +149,7 @@ export default function Register() {
                   </span>
                   <input type="text" value={name} onChange={e => setName(e.target.value)}
                     className="input-field pl-10"
-                    placeholder="John Doe" required />
+                    placeholder="Full Name" required />
                 </div>
               </div>
               <div>
@@ -160,7 +160,7 @@ export default function Register() {
                   </span>
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                     className="input-field pl-10"
-                    placeholder="john@company.com" required />
+                    placeholder="you@company.com" required />
                 </div>
               </div>
             </div>
@@ -182,7 +182,7 @@ export default function Register() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {roles.map(r => (
                   <button key={r.value} type="button" onClick={() => setRole(r.value)}
-                    className="flex items-center gap-3 p-3 rounded-xl transition-all group text-left cursor-pointer"
+                    className="flex items-start gap-3 p-3 rounded-xl transition-all group text-left cursor-pointer min-h-[88px]"
                     style={{
                       background: role === r.value ? 'rgba(43,127,255,0.12)' : 'rgba(255,255,255,0.05)',
                       border: role === r.value 
@@ -190,13 +190,15 @@ export default function Register() {
                         : '1px solid rgba(255,255,255,0.08)',
                       boxShadow: role === r.value ? '0 0 15px rgba(43,127,255,0.15)' : 'none',
                     }}>
-                    <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
+                    <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110 mt-0.5"
                       style={{ background: r.gradient, boxShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
                       <r.icon size={17} className="text-white" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium" style={{ color: '#f8fafc' }}>{r.label}</p>
-                      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '11px' }} className="truncate">{r.desc}</p>
+                    <div className="flex-1 min-w-0 pt-0.5">
+                      <p className="text-sm font-medium leading-tight" style={{ color: '#f8fafc' }}>{r.label}</p>
+                      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '11px', lineHeight: '1.35' }} className="mt-1">
+                        {r.desc}
+                      </p>
                     </div>
                   </button>
                 ))}
