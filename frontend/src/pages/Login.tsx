@@ -31,7 +31,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-      style={{ background: '#010509' }}>
+      style={{ background: 'var(--bg-primary)' }}>
 
       {/* Grid pattern */}
       <div className="absolute inset-0 pointer-events-none"
@@ -89,14 +89,14 @@ export default function Login() {
 
         {/* Title */}
         <div className="text-center mb-8">
-          <h1 className="font-heading text-3xl font-bold text-white mb-3">
+          <h1 className="font-heading text-3xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
             Welcome to <span className="text-gradient">TransitOps</span>
           </h1>
           <p style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: '15px',
             lineHeight: '24px',
-            color: 'rgba(255,255,255,0.5)',
+            color: 'var(--text-secondary)',
             maxWidth: '380px',
             margin: '0 auto',
           }}>
@@ -106,25 +106,25 @@ export default function Login() {
 
         {/* Login Card */}
         <div style={{
-          background: 'rgba(255,255,255,0.04)',
+          background: 'var(--bg-card)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255,255,255,0.08)',
+          border: '1px solid var(--border-color)',
           borderRadius: '20px',
           padding: '28px',
-          boxShadow: '0 25px 50px rgba(0,0,0,0.4), 0 0 60px rgba(152,16,250,0.04)',
+          boxShadow: 'var(--shadow-lg)',
           marginBottom: '24px',
         }}>
-          <h2 className="text-white font-semibold text-lg mb-5 font-heading">Sign in to your account</h2>
+          <h2 className="font-semibold text-lg mb-5 font-heading" style={{ color: 'var(--text-primary)' }}>Sign in to your account</h2>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email</label>
+              <label className="block text-sm mb-1.5" style={{ color: 'var(--text-secondary)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                 className="input-field"
                 placeholder="you@company.com" />
             </div>
             <div>
-              <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Password</label>
+              <label className="block text-sm mb-1.5" style={{ color: 'var(--text-secondary)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Password</label>
               <input type="password" value={password} onChange={e => setPassword(e.target.value)}
                 className="input-field"
                 placeholder="••••••••" />
@@ -136,7 +136,7 @@ export default function Login() {
             </button>
           </form>
           <div className="text-center mt-5">
-            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px' }}>New to TransitOps? </span>
+            <span style={{ color: 'var(--text-muted)', fontSize: '14px' }}>New to TransitOps? </span>
             <Link to="/register" className="text-gradient hover:underline font-semibold" style={{ fontSize: '14px' }}>
               Create an Account
             </Link>
@@ -144,15 +144,15 @@ export default function Login() {
         </div>
 
         <div className="flex items-center justify-center gap-4 mb-4">
-          <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15))' }} />
-          <p className="section-label text-center" style={{ fontSize: '10px' }}>Demo profile IDs</p>
-          <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to left, transparent, rgba(255,255,255,0.15))' }} />
+          <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to right, transparent, var(--border-color))' }} />
+          <p className="section-label text-center" style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>Demo profile IDs</p>
+          <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to left, transparent, var(--border-color))' }} />
         </div>
         <div className="flex flex-wrap justify-center gap-2">
-          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.72)', border: '1px solid rgba(255,255,255,0.08)' }}>fleet@transitops.io</span>
-          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.72)', border: '1px solid rgba(255,255,255,0.08)' }}>driver@transitops.io</span>
-          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.72)', border: '1px solid rgba(255,255,255,0.08)' }}>safety@transitops.io</span>
-          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.72)', border: '1px solid rgba(255,255,255,0.08)' }}>finance@transitops.io</span>
+          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'var(--bg-input)', color: 'var(--text-secondary)', border: '1px solid var(--border-color)' }}>fleet@transitops.io</span>
+          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'var(--bg-input)', color: 'var(--text-secondary)', border: '1px solid var(--border-color)' }}>driver@transitops.io</span>
+          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'var(--bg-input)', color: 'var(--text-secondary)', border: '1px solid var(--border-color)' }}>safety@transitops.io</span>
+          <span className="px-3 py-2 rounded-full text-xs" style={{ background: 'var(--bg-input)', color: 'var(--text-secondary)', border: '1px solid var(--border-color)' }}>finance@transitops.io</span>
         </div>
       </div>
     </div>
