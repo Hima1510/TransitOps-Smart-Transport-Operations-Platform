@@ -1,115 +1,178 @@
-# TransitOps - Smart Transport Operations Platform
+# 🚚 TransitOps — Smart Transport Operations Platform
 
-TransitOps is a full-stack fleet and transport operations platform designed to help organizations manage vehicles, drivers, trips, maintenance, fuel usage, expenses, and operational insights from a unified interface. It combines a modern React frontend with a TypeScript-based Express backend and a local SQL-based data store.
+<p align="center">
+  <img src="./screenshots/banner.png" alt="TransitOps Banner" width="100%"/>
+</p>
 
-## Overview
+<p align="center">
+  <img alt="React" src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white&style=flat-square"/>
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white&style=flat-square"/>
+  <img alt="Express" src="https://img.shields.io/badge/Express.js-Backend-000000?logo=express&logoColor=white&style=flat-square"/>
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-Frontend-646CFF?logo=vite&logoColor=white&style=flat-square"/>
+  <img alt="SQLite" src="https://img.shields.io/badge/SQL.js-SQLite-003B57?logo=sqlite&logoColor=white&style=flat-square"/>
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-green?style=flat-square"/>
+</p>
 
-TransitOps provides a practical control center for fleet operations with:
+<p align="center">
+  <b>A unified control center for fleet operations — vehicles, drivers, trips, maintenance, fuel, and expenses — built for speed, clarity, and role-based decision making.</b>
+</p>
 
-- A responsive dashboard for operational KPIs and fleet health
-- Vehicle and driver management workflows
-- Trip lifecycle tracking and dispatch support
-- Maintenance scheduling and visibility
-- Fuel and expense logging
-- Role-based access for different business personas
+<p align="center">
+  <a href="#-demo">Demo</a> •
+  <a href="#-features">Features</a> •
+  <a href="#-tech-stack">Tech Stack</a> •
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-screenshots">Screenshots</a> •
+  <a href="#-roadmap">Roadmap</a> •
+  <a href="#-team">Team</a>
+</p>
 
-## Key Features
+---
 
-### Fleet Operations
-- Manage fleet vehicles with status, region, and utilization data
-- Track driver records, safety scores, and licensing details
-- Create and monitor trips from planning through completion
-- Log maintenance tasks and close them once resolved
-- Record fuel and other operational expenses
+## 📌 Overview
 
-### Intelligence & Monitoring
-- Real-time dashboard metrics such as active vehicles, utilization, and trips
-- Attention-based insights for expiring licenses and maintenance issues
-- Role-specific views for fleet managers, drivers, safety officers, and financial analysts
+**TransitOps** is a full-stack fleet and transport operations platform that helps organizations manage their entire mobility operation from a single, real-time dashboard. It replaces spreadsheets and disconnected tools with one system that fleet managers, drivers, safety officers, and financial analysts can all rely on — each with a view tailored to their role.
 
-### Security & Access Control
-- Secure authentication with email and password
+Built for **[Hackathon Name] 2026**, TransitOps demonstrates how a lean, well-architected full-stack app can solve a real operational problem: fragmented visibility across vehicles, people, and money in a transport business.
+
+> 💡 **Problem it solves:** Fleet operators today juggle spreadsheets, WhatsApp groups, and paper logs to track vehicle health, driver licensing, trip status, and fuel spend — leading to missed maintenance windows, expired licenses, and poor cost visibility. TransitOps centralizes all of it with real-time KPIs and proactive alerts.
+
+---
+
+## 🎥 Demo
+
+<p align="center">
+  <img src="./screenshots/demo.gif" alt="TransitOps Demo" width="85%"/>
+</p>
+
+🎬 **Video Walkthrough:** [[add-your-video-link-here]](https://drive.google.com/file/d/1eyvuXQGLIdxAIR3wHtNlhl5yMDHB9XwY/view?usp=drive_link)
+
+---
+
+## ✨ Features
+
+### 🚗 Fleet Operations
+- Manage fleet vehicles with live status, region, and utilization tracking
+- Maintain driver records including safety scores and licensing details
+- Full trip lifecycle — plan, dispatch, monitor, and complete trips
+- Maintenance scheduling with open/close tracking
+- Fuel and operational expense logging
+
+### 📊 Intelligence & Monitoring
+- Real-time dashboard with KPIs: active vehicles, utilization %, ongoing trips
+- Proactive alerts for **expiring licenses** and **overdue maintenance**
+- Role-specific dashboards for fleet managers, drivers, safety officers, and financial analysts
+- Visual analytics powered by Recharts
+
+### 🔐 Security & Access Control
+- Email/password authentication with hashed credentials
 - JWT-based session handling
-- Protected routes and API endpoints
-- Role-based authorization for sensitive operations
+- Protected routes on both frontend and backend
+- Fine-grained role-based authorization (RBAC) for sensitive actions
 
-## Tech Stack
+---
 
-### Frontend
-- React 19
-- TypeScript
-- Vite
-- React Router
-- Tailwind CSS
-- Recharts for data visualization
-- Lucide React icons
-
-### Backend
-- Node.js
-- Express.js
-- TypeScript
-- JWT authentication
-- SQL.js with a local SQLite-backed database
-- Zod for schema validation
-
-## Project Structure
+## 🏗️ Architecture
 
 ```text
-backend/        # Express API, routes, services, and database layer
-frontend/       # React application and UI components
+┌─────────────────────┐        REST/JSON        ┌──────────────────────┐
+│   React Frontend     │ <---------------------> │   Express Backend     │
+│  (Vite + TS + Tailwind)                        │  (Node.js + TS)       │
+│  Recharts, Router     │                        │  JWT Auth, Zod        │
+└─────────────────────┘                          └──────────┬───────────┘
+                                                              │
+                                                              ▼
+                                                   ┌──────────────────────┐
+                                                   │  SQL.js (SQLite)      │
+                                                   │  backend/transitops.db│
+                                                   └──────────────────────┘
 ```
 
-## Prerequisites
+---
 
-Before running the project, ensure the following are installed:
+## 🛠️ Tech Stack
 
-- Node.js 18+ recommended
+**Frontend**
+- React 19, TypeScript, Vite
+- React Router
+- Tailwind CSS
+- Recharts (data visualization)
+- Lucide React (icons)
+
+**Backend**
+- Node.js, Express.js, TypeScript
+- JWT authentication
+- SQL.js with local SQLite-backed storage
+- Zod for schema validation
+
+---
+
+## 📂 Project Structure
+
+```text
+transitops/
+├── backend/        # Express API, routes, services, database layer
+│   ├── src/
+│   ├── transitops.db
+│   └── package.json
+├── frontend/        # React application and UI components
+│   ├── src/
+│   └── package.json
+├── screenshots/      # README screenshots & demo assets
+└── README.md
+```
+
+---
+
+## ⚡ Quick Start
+
+### Prerequisites
+- Node.js 18+
 - npm 9+
 
-## Installation
+### 1. Clone & Install
 
-Install dependencies for both the backend and frontend:
+```bash
+git clone https://github.com/<your-username>/transitops.git
+cd transitops
+
+cd backend && npm install
+cd ../frontend && npm install
+```
+
+### 2. Seed Demo Data
 
 ```bash
 cd backend
-npm install
-
-cd ../frontend
-npm install
+npm run seed
 ```
 
-## Running the Application
-
-### Start the Backend
-
-Open a terminal and run:
+### 3. Run the Backend
 
 ```bash
 cd backend
 npm run dev
 ```
+Backend runs at **http://localhost:3001**
 
-The backend server will start on:
-- http://localhost:3001
+### 4. Run the Frontend
 
-### Start the Frontend
-
-Open a second terminal and run:
+In a new terminal:
 
 ```bash
 cd frontend
 npm run dev
 ```
+Frontend runs at **http://localhost:5173**
 
-The frontend will be available at:
-- http://localhost:5173
+### 5. Health Check
 
-### Health Check
+Confirm the backend is live:
+```
+http://localhost:3001/api/health
+```
 
-You can verify the backend is running at:
-- http://localhost:3001/api/health
-
-If port 3001 is already in use, you can start the backend on another port and point Vite at the same port:
+### Using a Different Port (Windows / PowerShell)
 
 ```powershell
 cd backend
@@ -121,82 +184,92 @@ $env:VITE_BACKEND_PORT = "3002"
 npm run dev
 ```
 
-## Demo Data
+---
 
-The backend includes a seed script that populates sample users, vehicles, drivers, trips, and expenses.
+## 🔑 Demo Credentials
 
-Run:
+After seeding the database, sign in with any of the following:
 
-```bash
-cd backend
-npm run seed
-```
+| Role | Email | Password |
+|---|---|---|
+| Fleet Manager | `fleet@transitops.io` | `demo1234` |
+| Driver | `driver@transitops.io` | `demo1234` |
+| Safety Officer | `safety@transitops.io` | `demo1234` |
+| Financial Analyst | `finance@transitops.io` | `demo1234` |
 
-## Demo Credentials
+---
 
-After seeding the database, you can sign in with the following demo accounts:
+## 👥 Supported Roles
 
-- fleet@transitops.io
-- driver@transitops.io
-- safety@transitops.io
-- finance@transitops.io
+- `fleet_manager`
+- `driver`
+- `safety_officer`
+- `financial_analyst`
 
-Password for all demo accounts:
+---
 
-```text
-demo1234
-```
+## 📜 Available Scripts
 
-## Supported Roles
+**Backend** (`/backend`)
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the API in watch mode |
+| `npm run build` | Compile the TypeScript backend |
+| `npm run start` | Run the built server from `dist/index.js` |
+| `npm run seed` | Populate the local database with demo data |
 
-The platform supports the following roles:
+**Frontend** (`/frontend`)
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the Vite development server |
+| `npm run build` | Build the production bundle |
+| `npm run preview` | Preview the production build locally |
 
-- fleet_manager
-- driver
-- safety_officer
-- financial_analyst
+---
 
-## Available Scripts
+## 🔌 API Overview
 
-### Backend
+All endpoints are namespaced under `/api` and most are protected via JWT + role-based access control.
 
-From the backend folder:
+| Endpoint | Description |
+|---|---|
+| `/api/auth` | Login and registration |
+| `/api/vehicles` | Vehicle operations and details |
+| `/api/drivers` | Driver records and profiles |
+| `/api/trips` | Trip creation, dispatch, completion, cancellation |
+| `/api/maintenance` | Maintenance records and closure actions |
+| `/api/fuel` | Fuel logs |
+| `/api/expenses` | Expense tracking |
+| `/api/dashboard` | KPI and operational dashboard data |
 
-- npm run dev — start the API in watch mode
-- npm run build — compile the TypeScript backend
-- npm run start — run the built server from dist/index.js
-- npm run seed — populate the local database with demo data
+---
 
-### Frontend
+## 🧠 What We Learned / Challenges *(hackathon reflection — customize this)*
 
-From the frontend folder:
+Briefly describe:
+- A key technical challenge and how your team solved it
+- Something new you learned during the build
+- What you'd do differently with more time
 
-- npm run dev — start the Vite development server
-- npm run build — build the production bundle
-- npm run preview — preview the production build locally
+---
 
-## API Overview
+## 🏆 Team
 
-The backend exposes RESTful endpoints under the /api namespace, including:
+| Name | Role | GitHub |
+|---|---|---|
+| Hima Mehta | Full-Stack Developer |
+| Chandni Kothari | Full-Stack Developer |
+| Kairavi Padhariya | Frontend / UI |
+| Akshara Pandya | Frontend / UI |
 
-- /api/auth — login and registration
-- /api/vehicles — vehicle operations and vehicle details
-- /api/drivers — driver records and profiles
-- /api/trips — trip creation, dispatch, completion, and cancellation
-- /api/maintenance — maintenance records and closure actions
-- /api/fuel — fuel logs
-- /api/expenses — expense tracking
-- /api/dashboard — KPI and operational dashboard data
+---
 
-Most routes are protected with authentication and role-based access control.
+## 📝 Notes
 
-## Notes
+- The backend stores its local database at `backend/transitops.db`
+- If authentication fails, confirm the backend is running and the database has been seeded
+- The frontend proxies API requests to the backend on port `3001`
 
-- The backend stores its local database in backend/transitops.db
-- If authentication fails, confirm that the backend is running and the database has been seeded
-- The frontend is configured to proxy API requests to the backend on port 3001
+---
 
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-
+<p align="center">Made with ❤️ for Odoo 2026</p>
