@@ -15,6 +15,7 @@ import Maintenance from './pages/Maintenance';
 import FuelExpenses from './pages/FuelExpenses';
 import Reports from './pages/Reports';
 import SafetyOfficerDashboard from './pages/SafetyOfficerDashboard';
+import FinancialAnalystDashboard from './pages/FinancialAnalystDashboard';
 
 function ProtectedLayout() {
   const { isAuthenticated } = useAuth();
@@ -49,6 +50,7 @@ export default function App() {
         <Route element={<ProtectedLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/safety" element={<SafetyOfficerDashboard />} />
+          <Route path="/finance" element={<FinancialAnalystDashboard />} />
           <Route path="/vehicles" element={<Vehicles />} />
           <Route path="/vehicles/:id" element={<Vehicle360 />} />
           <Route path="/drivers" element={<Drivers />} />
