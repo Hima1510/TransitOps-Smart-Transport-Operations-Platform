@@ -1,9 +1,16 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { api } from '../api/client';
-import { Truck, Shield, BarChart3, UserCircle, Sparkles } from 'lucide-react';
+import { Truck, Shield, BarChart3, UserCircle, Sparkles, User, Mail, Lock } from 'lucide-react';
+
+const roles = [
+  { value: 'fleet_manager', label: 'Fleet Manager', icon: Truck, desc: 'Full platform access', gradient: 'linear-gradient(135deg, #155dfc, #2b7fff)' },
+  { value: 'driver', label: 'Driver', icon: UserCircle, desc: 'Trips & vehicle logs', gradient: 'linear-gradient(135deg, #059669, #34d399)' },
+  { value: 'safety_officer', label: 'Safety Officer', icon: Shield, desc: 'Compliance & safety', gradient: 'linear-gradient(135deg, #d97706, #fbbf24)' },
+  { value: 'financial_analyst', label: 'Financial Analyst', icon: BarChart3, desc: 'Costs, fuel & ROI', gradient: 'linear-gradient(135deg, #9810fa, #c084fc)' },
+];
 
 const featureCards = [
   { label: 'Live Tracking', x: -320, y: 80 },
@@ -16,22 +23,29 @@ export default function Register() {
   const { login } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '', role: 'fleet_manager' });
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('fleet_manager');
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = async (e?: React.FormEvent) => {
-    e?.preventDefault();
-    if (!form.name || !form.email || !form.password) return;
-    if (form.password !== form.confirmPassword) {
-      showToast('Passwords do not match', 'error');
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !email || !password || !role) {
+      showToast('All fields are required', 'error');
+      return;
+    }
+    if (password.length < 6) {
+      showToast('Password must be at least 6 characters', 'error');
       return;
     }
 
     setLoading(true);
     try {
-      const data = await api.register(form.name, form.email, form.password, form.role);
+      const data = await api.register(name, email, password, role);
       login(data.token, data.user);
-      showToast(`Welcome aboard, ${data.user.name}!`);
+      showToast(`Account created! Welcome, ${data.user.name}!`);
       navigate('/');
     } catch (err: any) {
       showToast(err.message, 'error');
@@ -43,22 +57,26 @@ export default function Register() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
       style={{ background: '#010509' }}>
+
+      {/* Grid pattern */}
       <div className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
           backgroundSize: '64px 64px',
         }} />
 
+      {/* Radial blue glow */}
       <div className="absolute pointer-events-none"
         style={{
           width: 800, height: 800,
-          left: '50%', top: '50%',
+          left: '50%', top: '42%',
           transform: 'translate(-50%, -50%)',
           background: 'radial-gradient(circle, rgba(43,127,255,0.08) 0%, transparent 65%)',
           borderRadius: '50%',
         }} />
 
-      <div className="absolute pointer-events-none" style={{ left: '50%', top: '38%', transform: 'translate(-50%, -50%)' }}>
+      {/* Animated Orb */}
+      <div className="absolute pointer-events-none" style={{ left: '50%', top: '30%', transform: 'translate(-50%, -50%)' }}>
         <div className="orb-bg-glow" />
         <div className="orb-container">
           <div className="orb-sphere" />
@@ -70,13 +88,14 @@ export default function Register() {
         </div>
       </div>
 
+      {/* Feature labels (hidden on mobile) */}
       <div className="hidden lg:block">
         {featureCards.map(card => (
           <div key={card.label}
             className="absolute pointer-events-none"
             style={{
               left: `calc(50% + ${card.x}px)`,
-              top: `calc(38% + ${card.y}px)`,
+              top: `calc(30% + ${card.y}px)`,
               transform: 'translate(-50%, -50%)',
             }}>
             <div style={{
@@ -98,7 +117,9 @@ export default function Register() {
         ))}
       </div>
 
-      <div className="w-full max-w-md relative z-10" style={{ marginTop: '160px' }}>
+      {/* Main Content */}
+      <div className="w-full max-w-xl relative z-10" style={{ marginTop: '120px' }}>
+        {/* Badge */}
         <div className="flex justify-center mb-6">
           <div className="flex items-center gap-2"
             style={{
@@ -120,22 +141,24 @@ export default function Register() {
           </div>
         </div>
 
-        <div className="text-center mb-8">
-          <h1 className="font-heading text-3xl font-bold text-white mb-3">
-            Create your <span className="text-gradient">TransitOps</span> account
+        {/* Title */}
+        <div className="text-center mb-6">
+          <h1 className="font-heading text-3xl font-bold text-white mb-2">
+            Create your <span className="text-gradient">TransitOps</span> Account
           </h1>
           <p style={{
             fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: '15px',
-            lineHeight: '24px',
+            fontSize: '14px',
+            lineHeight: '22px',
             color: 'rgba(255,255,255,0.5)',
-            maxWidth: '380px',
+            maxWidth: '420px',
             margin: '0 auto',
           }}>
-            Register to manage vehicles, drivers, trips, maintenance, and fleet insights in one place.
+            Register now to manage your fleet assets, drivers, trips, and expenses in one single pane of glass.
           </p>
         </div>
 
+        {/* Card */}
         <div style={{
           background: 'rgba(255,255,255,0.04)',
           backdropFilter: 'blur(20px)',
@@ -144,61 +167,85 @@ export default function Register() {
           borderRadius: '20px',
           padding: '28px',
           boxShadow: '0 25px 50px rgba(0,0,0,0.4), 0 0 60px rgba(152,16,250,0.04)',
-          marginBottom: '24px',
+          marginBottom: '20px',
         }}>
-          <h2 className="text-white font-semibold text-lg mb-5 font-heading">Sign up for TransitOps</h2>
           <form onSubmit={handleRegister} className="space-y-4">
-            <div>
-              <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Full Name</label>
-              <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                className="input-field"
-                placeholder="Alex Morgan" required />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Full Name</label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+                    <User size={16} />
+                  </span>
+                  <input type="text" value={name} onChange={e => setName(e.target.value)}
+                    className="input-field pl-10"
+                    placeholder="John Doe" required />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email Address</label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+                    <Mail size={16} />
+                  </span>
+                  <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                    className="input-field pl-10"
+                    placeholder="john@company.com" required />
+                </div>
+              </div>
             </div>
-            <div>
-              <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email</label>
-              <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
-                className="input-field"
-                placeholder="you@company.com" required />
-            </div>
-            <div>
-              <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Role</label>
-              <select value={form.role} onChange={e => setForm({ ...form, role: e.target.value })} className="input-field" required>
-                <option value="fleet_manager">Fleet Manager</option>
-                <option value="driver">Driver</option>
-                <option value="safety_officer">Safety Officer</option>
-                <option value="financial_analyst">Financial Analyst</option>
-              </select>
-            </div>
+
             <div>
               <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Password</label>
-              <input type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })}
-                className="input-field"
-                placeholder="••••••••" required />
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+                  <Lock size={16} />
+                </span>
+                <input type="password" value={password} onChange={e => setPassword(e.target.value)}
+                  className="input-field pl-10"
+                  placeholder="At least 6 characters" required />
+              </div>
             </div>
+
             <div>
-              <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Confirm Password</label>
-              <input type="password" value={form.confirmPassword} onChange={e => setForm({ ...form, confirmPassword: e.target.value })}
-                className="input-field"
-                placeholder="••••••••" required />
+              <label className="block text-sm mb-2" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Select Your Role</label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {roles.map(r => (
+                  <button key={r.value} type="button" onClick={() => setRole(r.value)}
+                    className="flex items-center gap-3 p-3 rounded-xl transition-all group text-left cursor-pointer"
+                    style={{
+                      background: role === r.value ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)',
+                      border: role === r.value 
+                        ? '1px solid rgba(43,127,255,0.5)' 
+                        : '1px solid rgba(255,255,255,0.06)',
+                      boxShadow: role === r.value ? '0 0 15px rgba(43,127,255,0.1)' : 'none',
+                    }}>
+                    <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
+                      style={{ background: r.gradient, boxShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
+                      <r.icon size={17} className="text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white text-sm font-medium">{r.label}</p>
+                      <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px' }} className="truncate">{r.desc}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
+
             <button type="submit" disabled={loading}
-              className="btn btn-primary w-full py-3 text-base"
+              className="btn btn-primary w-full py-3 text-base mt-2 cursor-pointer"
               style={{ borderRadius: '12px' }}>
-              {loading ? 'Creating account...' : 'Create Account'}
+              {loading ? 'Creating Account...' : 'Register'}
             </button>
           </form>
-          <div className="mt-4 text-center">
-            <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: '14px' }}>Already have an account?</span>{' '}
-            <Link to="/login" style={{ color: '#2b7fff', fontWeight: 600 }}>
-              Sign in
+
+          <div className="text-center mt-5">
+            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px' }}>Already have an account? </span>
+            <Link to="/login" className="text-gradient hover:underline font-semibold" style={{ fontSize: '14px' }}>
+              Sign In
             </Link>
           </div>
-        </div>
-
-        <div className="flex items-center justify-center gap-4 text-center">
-          <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15))' }} />
-          <span className="section-label" style={{ fontSize: '10px' }}>TRANSITOPS</span>
-          <div style={{ flex: 1, maxWidth: 100, height: 1, background: 'linear-gradient(to left, transparent, rgba(255,255,255,0.15))' }} />
         </div>
       </div>
     </div>

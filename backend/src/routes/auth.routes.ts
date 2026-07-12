@@ -68,23 +68,42 @@ router.post('/register', (req: Request, res: Response) => {
       return;
     }
 
+    const validRoles = ['fleet_manager', 'driver', 'safety_officer', 'financial_analyst'];
+    if (!validRoles.includes(role)) {
+      res.status(400).json({ error: 'Invalid role selected' });
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      res.status(400).json({ error: 'Invalid email address format' });
+      return;
+    }
+
+    if (password.length < 6) {
+      res.status(400).json({ error: 'Password must be at least 6 characters long' });
+      return;
+    }
+
     const db = getDb();
-    const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email) as any;
-    if (existing) {
-      res.status(409).json({ error: 'An account with this email already exists' });
+    
+    // Check if user already exists
+    const existingUser = db.prepare('SELECT * FROM users WHERE email = ?').get(email) as any;
+    if (existingUser) {
+      res.status(400).json({ error: 'A user with this email already exists' });
       return;
     }
 
     const passwordHash = bcrypt.hashSync(password, 10);
-    const result = db.prepare('INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)')
-      .run(name, email, passwordHash, role);
+    const result = db.prepare(
+      'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)'
+    ).run(name, email, passwordHash, role);
 
-    const user = db.prepare('SELECT * FROM users WHERE id = ?').get(result.lastInsertRowid) as any;
-    const token = signToken({ id: user.id, email: user.email, role: user.role, name: user.name });
-
+    const token = signToken({ id: result.lastInsertRowid, email, role, name });
+    
     res.status(201).json({
       token,
-      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+      user: { id: result.lastInsertRowid, name, email, role }
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
