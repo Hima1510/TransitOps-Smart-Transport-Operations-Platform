@@ -80,18 +80,18 @@
 
   :root[data-theme='light'] {
     color-scheme: light;
-    --bg-primary: #f4f7fb;
-    --bg-card: rgba(255, 255, 255, 0.9);
+    --bg-primary: #f8fbff;
+    --bg-card: #ffffff;
     --bg-card-solid: #ffffff;
     --bg-sidebar: #f8fafc;
-    --bg-input: rgba(15, 23, 42, 0.03);
+    --bg-input: #ffffff;
     --text-primary: #0f172a;
-    --text-secondary: #111827;
-    --text-muted: #374151;
-    --border-color: rgba(15, 23, 42, 0.12);
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --border-color: rgba(15, 23, 42, 0.14);
     --border-color-hover: rgba(15, 23, 42, 0.2);
     --shadow-card: 0 1px 3px 0 rgb(15 23 42 / 0.12);
-    --shadow-lg: 0 18px 40px -16px rgb(15 23 42 / 0.2);
+    --shadow-lg: 0 18px 40px -16px rgb(15 23 42 / 0.18);
     --shadow-glow: 0 0 40px rgba(43, 127, 255, 0.12);
     --gradient-primary: linear-gradient(135deg, #155dfc 0%, #9810fa 100%);
     --gradient-subtle: linear-gradient(135deg, rgba(21, 93, 252, 0.12), rgba(152, 16, 250, 0.08));
@@ -130,6 +130,7 @@
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     transition: border-color 0.2s, box-shadow 0.3s;
+    color: var(--text-primary);
   }
   .card:hover {
     border-color: var(--border-color-hover);
@@ -667,6 +668,12 @@ select.input-field {
   backdrop-filter: blur(12px);
   position: relative;
   overflow: hidden;
+  color: var(--text-primary);
+}
+html:not(.dark) .glow-card {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
 }
 .glow-card::before {
   content: '';
@@ -676,6 +683,9 @@ select.input-field {
   right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(152, 16, 250, 0.3), transparent);
+}
+html:not(.dark) .glow-card::before {
+  background: linear-gradient(90deg, transparent, rgba(21, 93, 252, 0.18), transparent);
 }
 
 /* ---------- RESPONSIVE ---------- */

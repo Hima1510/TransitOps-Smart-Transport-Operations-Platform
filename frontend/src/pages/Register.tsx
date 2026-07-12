@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { api } from '../api/client';
-import { Sparkles, User, Mail, Lock, Truck, UserCircle, Shield, BarChart3 } from 'lucide-react';
+import { Sparkles, Truck, UserCircle, Shield, BarChart3 } from 'lucide-react';
 
 const roles = [
   { value: 'fleet_manager', label: 'Fleet Manager', desc: 'Full platform access', icon: Truck, gradient: 'linear-gradient(135deg, #155dfc, #2b7fff)' },
@@ -22,14 +22,6 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('fleet_manager');
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    document.documentElement.classList.add('dark');
-    document.documentElement.style.colorScheme = 'dark';
-    return () => {
-      document.documentElement.style.colorScheme = '';
-    };
-  }, []);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,38 +135,23 @@ export default function Register() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.64)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Full Name</label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center" style={{ color: 'rgba(255,255,255,0.58)' }}>
-                    <User size={16} />
-                  </span>
-                  <input type="text" value={name} onChange={e => setName(e.target.value)}
-                    className="input-field pl-10"
-                    placeholder="John Doe" required />
-                </div>
+                <input type="text" value={name} onChange={e => setName(e.target.value)}
+                className="input-field"
+                placeholder="John Doe" required />
               </div>
               <div>
                 <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.64)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email Address</label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center" style={{ color: 'rgba(255,255,255,0.58)' }}>
-                    <Mail size={16} />
-                  </span>
-                  <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                    className="input-field pl-10"
-                    placeholder="john@company.com" required />
-                </div>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                  className="input-field"
+                  placeholder="john@company.com" required />
               </div>
             </div>
 
             <div>
               <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.64)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Password</label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center" style={{ color: 'rgba(255,255,255,0.58)' }}>
-                  <Lock size={16} />
-                </span>
-                <input type="password" value={password} onChange={e => setPassword(e.target.value)}
-                  className="input-field pl-10"
-                  placeholder="At least 6 characters" required />
-              </div>
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)}
+                className="input-field"
+                placeholder="At least 6 characters" required />
             </div>
 
             <div>

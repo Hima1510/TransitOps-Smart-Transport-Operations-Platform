@@ -42,7 +42,7 @@ export default function Footer() {
         </p>
         <div className="flex items-center gap-2">
           <Activity size={12} className="text-emerald-500 animate-pulse" />
-          <span className="text-[11px]" style={{ color: 'rgba(255, 255, 255, 0.45)' }}>System Status: </span>
+          <span className="text-[11px]" style={{ color: 'rgba(255, 255, 255, 0.93)' }}>System Status: </span>
           <span className="text-[11px] font-semibold text-emerald-400">Optimal</span>
         </div>
       </div>
