@@ -5,9 +5,27 @@ async function request(url: string, options: RequestInit = {}) {
   const headers: Record<string, string> = { 'Content-Type': 'application/json', ...(options.headers as Record<string, string> || {}) };
   if (token) headers['Authorization'] = `Bearer ${token}`;
   const res = await fetch(`${API_BASE}${url}`, { ...options, headers });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || `Request failed: ${res.status}`);
-  return data;
+  const contentType = res.headers.get('content-type') || '';
+  const raw = await res.text();
+
+  let data: any = null;
+  if (contentType.includes('application/json') && raw) {
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      data = null;
+    }
+  }
+
+  if (!res.ok) {
+    if (data?.error) throw new Error(data.error);
+    if (raw && raw.startsWith('<!DOCTYPE')) {
+      throw new Error(`Backend route not found for ${url}`);
+    }
+    throw new Error(`Request failed: ${res.status}`);
+  }
+
+  return data ?? (raw ? JSON.parse(raw) : null);
 }
 
 export const api = {

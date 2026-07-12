@@ -13,6 +13,10 @@ function getPasswordHash(user: any): string | undefined {
   return undefined;
 }
 
+function pickUserField(user: any, key: string, index: number) {
+  return user?.[key] ?? user?.[index];
+}
+
 router.post('/login', (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -55,6 +59,51 @@ router.post('/login', (req: Request, res: Response) => {
         role: user.role ?? user[4],
       },
     });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post('/register', (req: Request, res: Response) => {
+  try {
+    const { name, email, password, role } = req.body;
+    if (!name || !email || !password) {
+      res.status(400).json({ error: 'Name, email and password are required' });
+      return;
+    }
+
+    if (!role || role === 'select_role') {
+      res.status(400).json({ error: 'Role not selected' });
+      return;
+    }
+
+    const allowedRoles = ['fleet_manager', 'driver', 'safety_officer', 'financial_analyst'];
+    if (!allowedRoles.includes(role)) {
+      res.status(400).json({ error: 'Invalid role selected' });
+      return;
+    }
+
+    const db = getDb();
+    const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email) as any;
+    if (existing) {
+      res.status(409).json({ error: 'Email already registered' });
+      return;
+    }
+
+    const passwordHash = bcrypt.hashSync(password, 10);
+    const result = db.prepare(
+      'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)'
+    ).run(name, email, passwordHash, role);
+
+    const user = {
+      id: result.lastInsertRowid,
+      name,
+      email,
+      role,
+    };
+
+    const token = signToken(user);
+    res.status(201).json({ token, user });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
