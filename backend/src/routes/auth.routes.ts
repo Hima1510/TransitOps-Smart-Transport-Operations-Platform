@@ -5,6 +5,14 @@ import bcrypt from 'bcryptjs';
 
 const router = Router();
 
+function getPasswordHash(user: any): string | undefined {
+  if (!user) return undefined;
+  if (typeof user.password_hash === 'string') return user.password_hash;
+  if (typeof user.passwordHash === 'string') return user.passwordHash;
+  if (Array.isArray(user) && typeof user[3] === 'string') return user[3];
+  return undefined;
+}
+
 router.post('/login', (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -20,16 +28,32 @@ router.post('/login', (req: Request, res: Response) => {
       return;
     }
 
-    const valid = bcrypt.compareSync(password, user.password_hash);
+    const passwordHash = getPasswordHash(user);
+    if (!passwordHash) {
+      res.status(500).json({ error: 'User record is missing a password hash' });
+      return;
+    }
+
+    const valid = bcrypt.compareSync(password, passwordHash);
     if (!valid) {
       res.status(401).json({ error: 'Invalid credentials' });
       return;
     }
 
-    const token = signToken({ id: user.id, email: user.email, role: user.role, name: user.name });
+    const token = signToken({
+      id: user.id ?? user[0],
+      email: user.email ?? user[2],
+      role: user.role ?? user[4],
+      name: user.name ?? user[1],
+    });
     res.json({
       token,
-      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+      user: {
+        id: user.id ?? user[0],
+        name: user.name ?? user[1],
+        email: user.email ?? user[2],
+        role: user.role ?? user[4],
+      },
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
