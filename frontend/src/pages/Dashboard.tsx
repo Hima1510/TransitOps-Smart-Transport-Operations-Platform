@@ -69,10 +69,10 @@ export default function Dashboard() {
       {/* Header & Filters */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="font-heading text-2xl font-bold text-white">
+          <h1 className="font-heading text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>
             Fleet <span className="text-gradient">Dashboard</span>
           </h1>
-          <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
             Real-time overview of your transport operations
           </p>
         </div>
@@ -113,13 +113,13 @@ export default function Dashboard() {
         {kpiCards.map(k => (
           <div key={k.label} className="glow-card p-5 hover:border-purple-500/20 transition-all">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.5)' }}>{k.label}</span>
+              <span className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>{k.label}</span>
               <div className="w-9 h-9 rounded-lg flex items-center justify-center"
                 style={{ background: kpiGradients[k.idx], boxShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
                 <k.icon size={18} className="text-white" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-white stat-value">{formatNumber(k.value || 0)}</p>
+            <p className="text-3xl font-bold stat-value" style={{ color: 'var(--text-primary)' }}>{formatNumber(k.value || 0)}</p>
           </div>
         ))}
 
@@ -141,26 +141,26 @@ export default function Dashboard() {
               </PieChart>
             </ResponsiveContainer>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-2xl font-bold text-white">{kpis?.fleetUtilization}%</span>
-              <span className="text-[11px]" style={{ color: 'rgba(255,255,255,0.4)' }}>Utilized</span>
+              <span className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{kpis?.fleetUtilization}%</span>
+              <span className="text-[11px]" style={{ color: 'var(--text-muted)' }}>Utilized</span>
             </div>
           </div>
           <div>
             <div className="flex items-center gap-2 mb-1">
               <TrendingUp size={18} className="text-gradient" style={{ color: '#9810fa' }} />
-              <h3 className="font-semibold text-white text-lg font-heading">Fleet Utilization</h3>
+              <h3 className="font-semibold text-lg font-heading" style={{ color: 'var(--text-primary)' }}>Fleet Utilization</h3>
             </div>
-            <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
               {kpis?.vehiclesOnTrip} of {kpis?.totalVehicles} vehicles currently on trips
             </p>
             <div className="mt-3 flex gap-4 text-sm">
               <span className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ background: 'linear-gradient(135deg, #155dfc, #9810fa)' }} />
-                <span style={{ color: 'rgba(255,255,255,0.5)' }}>On Trip ({kpis?.vehiclesOnTrip})</span>
+                <span style={{ color: 'var(--text-secondary)' }}>On Trip ({kpis?.vehiclesOnTrip})</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ background: 'rgba(255,255,255,0.1)' }} />
-                <span style={{ color: 'rgba(255,255,255,0.5)' }}>Idle ({(kpis?.totalVehicles || 0) - (kpis?.vehiclesOnTrip || 0)})</span>
+                <span style={{ color: 'var(--text-secondary)' }}>Idle ({(kpis?.totalVehicles || 0) - (kpis?.vehiclesOnTrip || 0)})</span>
               </span>
             </div>
           </div>
@@ -170,7 +170,7 @@ export default function Dashboard() {
       {/* Attention Section */}
       {attention && (
         <div className="glow-card p-6">
-          <h2 className="font-heading font-semibold text-white text-lg mb-4 flex items-center gap-2">
+          <h2 className="font-heading font-semibold text-lg mb-4 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
             <AlertTriangle size={20} style={{ color: '#fbbf24' }} />
             Attention Required
           </h2>
@@ -183,7 +183,7 @@ export default function Dashboard() {
                 </div>
                 {attention.expiredLicenses.map((d: any) => (
                   <div key={d.id} className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid rgba(239,68,68,0.1)' }}>
-                    <span className="text-sm text-white font-medium">{d.name}</span>
+                    <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{d.name}</span>
                     <span className="text-xs font-semibold" style={{ color: '#f87171' }}>Expired {Math.abs(daysUntil(d.license_expiry))}d ago</span>
                   </div>
                 ))}
@@ -197,7 +197,7 @@ export default function Dashboard() {
                 </div>
                 {attention.expiringLicenses.map((d: any) => (
                   <div key={d.id} className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid rgba(217,119,6,0.1)' }}>
-                    <span className="text-sm text-white font-medium">{d.name}</span>
+                    <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{d.name}</span>
                     <span className="text-xs font-semibold" style={{ color: '#fbbf24' }}>{daysUntil(d.license_expiry)}d left</span>
                   </div>
                 ))}
@@ -211,14 +211,14 @@ export default function Dashboard() {
                 </div>
                 {attention.overdueMaintenance.map((m: any) => (
                   <div key={m.id} className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid rgba(249,115,22,0.1)' }}>
-                    <span className="text-sm text-white font-medium">{m.vehicle_reg}</span>
+                    <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{m.vehicle_reg}</span>
                     <span className="text-xs" style={{ color: '#fb923c' }}>{m.description?.substring(0,30)}...</span>
                   </div>
                 ))}
               </div>
             )}
             {!attention.expiredLicenses?.length && !attention.expiringLicenses?.length && !attention.overdueMaintenance?.length && (
-              <div className="col-span-3 text-center py-8" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <div className="col-span-3 text-center py-8" style={{ color: 'var(--text-secondary)' }}>
                 <CheckCircle size={40} className="mx-auto mb-2" style={{ color: '#34d399' }} />
                 <p className="font-medium">All clear! No urgent items.</p>
               </div>
