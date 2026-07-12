@@ -1,4 +1,4 @@
-# TransitOps Smart Transport Operations Platform
+# TransitOps - Smart Transport Operations Platform
 
 TransitOps is a full-stack fleet operations platform for managing vehicles, drivers, trips, maintenance, fuel logs, and expenses.
 
