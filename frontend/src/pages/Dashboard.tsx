@@ -17,7 +17,9 @@ export default function Dashboard() {
   const [kpis, setKpis] = useState<any>(null);
   const [attention, setAttention] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  useEffect(() => { Promise.all([api.getKPIs(), api.getAttention()]).then(([k, a]) => { setKpis(k); setAttention(a); }).finally(() => setLoading(false)); }, []);
+  useEffect(() => {
+    Promise.all([api.getKPIs(), api.getAttention()]).then(([k, a]) => { setKpis(k); setAttention(a); }).finally(() => setLoading(false));
+  }, []);
 
   if (loading) return (
     <div className="animate-pulse space-y-6">

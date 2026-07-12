@@ -23,7 +23,7 @@ export function getNavItems(role: string) {
   const base = [{ path: '/', label: 'Dashboard', icon: 'LayoutDashboard' }];
   if (role === 'fleet_manager') return [...base, { path: '/vehicles', label: 'Vehicles', icon: 'Truck' }, { path: '/drivers', label: 'Drivers', icon: 'Users' }, { path: '/trips', label: 'Trips', icon: 'Route' }, { path: '/maintenance', label: 'Maintenance', icon: 'Wrench' }, { path: '/fuel-expenses', label: 'Fuel & Expenses', icon: 'Fuel' }, { path: '/reports', label: 'Reports', icon: 'BarChart3' }];
   if (role === 'driver') return [...base, { path: '/trips', label: 'My Trips', icon: 'Route' }, { path: '/vehicles', label: 'Vehicles', icon: 'Truck' }];
-  if (role === 'safety_officer') return [...base, { path: '/vehicles', label: 'Vehicles', icon: 'Truck' }, { path: '/drivers', label: 'Drivers', icon: 'Users' }, { path: '/trips', label: 'Trips', icon: 'Route' }, { path: '/maintenance', label: 'Maintenance', icon: 'Wrench' }];
+  if (role === 'safety_officer') return [...base, { path: '/safety', label: 'Safety Center', icon: 'LayoutDashboard' }, { path: '/vehicles', label: 'Vehicles', icon: 'Truck' }, { path: '/drivers', label: 'Drivers', icon: 'Users' }, { path: '/trips', label: 'Trips', icon: 'Route' }, { path: '/maintenance', label: 'Maintenance', icon: 'Wrench' }];
   if (role === 'financial_analyst') return [...base, { path: '/vehicles', label: 'Vehicles', icon: 'Truck' }, { path: '/fuel-expenses', label: 'Fuel & Expenses', icon: 'Fuel' }, { path: '/reports', label: 'Reports', icon: 'BarChart3' }];
   return base;
 }
