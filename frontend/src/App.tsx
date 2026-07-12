@@ -4,7 +4,6 @@ import { useAuth } from './context/AuthContext';
 import Sidebar from './components/layout/Sidebar';
 import TopBar from './components/layout/TopBar';
 import Footer from './components/layout/Footer';
-import Footer from './components/layout/Footer';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
