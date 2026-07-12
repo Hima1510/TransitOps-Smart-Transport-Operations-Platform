@@ -26,10 +26,45 @@
 
 @layer base {
   :root {
+    --bg-primary: #f8fafc;
+    --bg-card: rgba(255, 255, 255, 0.9);
+    --bg-card-solid: #ffffff;
+    --bg-sidebar: #ffffff;
+    --sidebar-grid: linear-gradient(rgba(15,23,42,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(15,23,42,0.04) 1px, transparent 1px);
+    --sidebar-icon-bg: rgba(15,23,42,0.05);
+    --sidebar-icon-active-bg: linear-gradient(135deg, rgba(21, 93, 252, 0.15), rgba(152, 16, 250, 0.1));
+    --sidebar-text: #0f172a;
+    --sidebar-muted: rgba(15, 23, 42, 0.68);
+    --sidebar-subtle: rgba(15, 23, 42, 0.45);
+    --text-primary: #0f172a;
+    --text-secondary: rgba(15, 23, 42, 0.68);
+    --text-muted: rgba(15, 23, 42, 0.42);
+    --border-color: rgba(15, 23, 42, 0.08);
+    --border-color-hover: rgba(43, 127, 255, 0.22);
+    --shadow-card: 0 1px 3px 0 rgb(15 23 42 / 0.08);
+    --shadow-lg: 0 10px 25px -3px rgb(15 23 42 / 0.12);
+    --shadow-glow: 0 0 40px rgba(43, 127, 255, 0.08);
+    --gradient-primary: linear-gradient(135deg, #155dfc 0%, #9810fa 100%);
+    --gradient-text: linear-gradient(90deg, #2b7fff 0%, #9810fa 100%);
+    --gradient-subtle: linear-gradient(135deg, rgba(21, 93, 252, 0.06), rgba(152, 16, 250, 0.06));
+    --grid-pattern: linear-gradient(rgba(15,23,42,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(15,23,42,0.04) 1px, transparent 1px);
+    --radial-glow: radial-gradient(circle at 50% 0%, rgba(43,127,255,0.08) 0%, transparent 60%);
+  }
+
+  html.dark {
     --bg-primary: #010509;
     --bg-card: rgba(255, 255, 255, 0.03);
     --bg-card-solid: #0a0f1a;
     --bg-sidebar: #010509;
+    --sidebar-grid: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    --sidebar-icon-bg: rgba(255,255,255,0.06);
+    --sidebar-icon-active-bg: linear-gradient(135deg, rgba(21, 93, 252, 0.2), rgba(152, 16, 250, 0.18));
+    --sidebar-text: #f1f5f9;
+    --sidebar-muted: rgba(255, 255, 255, 0.68);
+    --sidebar-subtle: rgba(255, 255, 255, 0.45);
     --text-primary: #f1f5f9;
     --text-secondary: rgba(255, 255, 255, 0.6);
     --text-muted: rgba(255, 255, 255, 0.35);
@@ -38,12 +73,8 @@
     --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.4);
     --shadow-lg: 0 10px 25px -3px rgb(0 0 0 / 0.5);
     --shadow-glow: 0 0 40px rgba(152, 16, 250, 0.08);
-    --gradient-primary: linear-gradient(135deg, #155dfc 0%, #9810fa 100%);
-    --gradient-text: linear-gradient(90deg, #2b7fff 0%, #9810fa 100%);
-    --gradient-subtle: linear-gradient(135deg, rgba(21, 93, 252, 0.08), rgba(152, 16, 250, 0.08));
     --grid-pattern: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
                     linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-    --radial-glow: radial-gradient(circle at 50% 0%, rgba(43,127,255,0.08) 0%, transparent 60%);
   }
 
   * {
@@ -53,7 +84,7 @@
   }
 
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   body {
@@ -96,6 +127,20 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  html:not(.dark) .text-white {
+    color: var(--text-primary) !important;
+  }
+
+  html:not(.dark) .text-slate-900 {
+    color: var(--text-primary) !important;
+  }
+
+  html:not(.dark) .text-slate-500,
+  html:not(.dark) .text-slate-600,
+  html:not(.dark) .text-slate-700 {
+    color: var(--text-secondary) !important;
   }
 
   .font-heading {

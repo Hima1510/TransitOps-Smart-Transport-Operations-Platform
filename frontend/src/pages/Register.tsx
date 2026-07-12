@@ -49,12 +49,12 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-      style={{ background: '#010509' }}>
+      style={{ background: 'var(--bg-primary)' }}>
 
       {/* Grid pattern */}
       <div className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
+          backgroundImage: 'linear-gradient(rgba(15,23,42,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,0.04) 1px, transparent 1px)',
           backgroundSize: '64px 64px',
         }} />
 
@@ -64,7 +64,7 @@ export default function Register() {
           width: 800, height: 800,
           left: '50%', top: '42%',
           transform: 'translate(-50%, -50%)',
-          background: 'radial-gradient(circle, rgba(43,127,255,0.08) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(43,127,255,0.10) 0%, transparent 65%)',
           borderRadius: '50%',
         }} />
 
@@ -87,8 +87,8 @@ export default function Register() {
             style={{
               padding: '6px 16px',
               borderRadius: '100px',
-              border: '1px solid rgba(255,255,255,0.12)',
-              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(15,23,42,0.08)',
+              background: 'rgba(255,255,255,0.85)',
             }}>
             <Sparkles size={14} style={{ color: '#9810fa' }} />
             <span style={{
@@ -98,7 +98,7 @@ export default function Register() {
               lineHeight: '18px',
               letterSpacing: '2px',
               textTransform: 'uppercase' as const,
-              color: 'rgba(255,255,255,0.8)',
+              color: 'rgba(15,23,42,0.82)',
             }}>SMART TRANSPORT PLATFORM</span>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function Register() {
             fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: '14px',
             lineHeight: '22px',
-            color: 'rgba(255,255,255,0.5)',
+            color: 'rgba(15,23,42,0.62)',
             maxWidth: '420px',
             margin: '0 auto',
           }}>
@@ -122,10 +122,10 @@ export default function Register() {
 
         {/* Card */}
         <div style={{
-          background: 'rgba(255,255,255,0.04)',
+          background: 'rgba(255,255,255,0.9)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255,255,255,0.08)',
+          border: '1px solid rgba(15,23,42,0.08)',
           borderRadius: '20px',
           padding: '28px',
           boxShadow: '0 25px 50px rgba(0,0,0,0.4), 0 0 60px rgba(152,16,250,0.04)',
@@ -134,7 +134,7 @@ export default function Register() {
           <form onSubmit={handleRegister} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Full Name</label>
+                <label className="block text-sm mb-1.5" style={{ color: 'rgba(15,23,42,0.62)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Full Name</label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
                     <User size={16} />
@@ -145,7 +145,7 @@ export default function Register() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email Address</label>
+                <label className="block text-sm mb-1.5" style={{ color: 'rgba(15,23,42,0.62)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Email Address</label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
                     <Mail size={16} />
@@ -158,7 +158,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="block text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Password</label>
+              <label className="block text-sm mb-1.5" style={{ color: 'rgba(15,23,42,0.62)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Password</label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
                   <Lock size={16} />
@@ -170,16 +170,16 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="block text-sm mb-2" style={{ color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Select Your Role</label>
+              <label className="block text-sm mb-2" style={{ color: 'rgba(15,23,42,0.62)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Select Your Role</label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {roles.map(r => (
                   <button key={r.value} type="button" onClick={() => setRole(r.value)}
                     className="flex items-center gap-3 p-3 rounded-xl transition-all group text-left cursor-pointer"
                     style={{
-                      background: role === r.value ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)',
+                      background: role === r.value ? 'rgba(43,127,255,0.08)' : 'rgba(255,255,255,0.75)',
                       border: role === r.value 
-                        ? '1px solid rgba(43,127,255,0.5)' 
-                        : '1px solid rgba(255,255,255,0.06)',
+                        ? '1px solid rgba(43,127,255,0.35)' 
+                        : '1px solid rgba(15,23,42,0.08)',
                       boxShadow: role === r.value ? '0 0 15px rgba(43,127,255,0.1)' : 'none',
                     }}>
                     <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
@@ -188,7 +188,7 @@ export default function Register() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm font-medium">{r.label}</p>
-                      <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px' }} className="truncate">{r.desc}</p>
+                      <p style={{ color: 'rgba(15,23,42,0.45)', fontSize: '11px' }} className="truncate">{r.desc}</p>
                     </div>
                   </button>
                 ))}
@@ -203,7 +203,7 @@ export default function Register() {
           </form>
 
           <div className="text-center mt-5">
-            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px' }}>Already have an account? </span>
+            <span style={{ color: 'rgba(15,23,42,0.52)', fontSize: '14px' }}>Already have an account? </span>
             <Link to="/login" className="text-gradient hover:underline font-semibold" style={{ fontSize: '14px' }}>
               Sign In
             </Link>
