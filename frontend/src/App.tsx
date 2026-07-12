@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Sidebar from './components/layout/Sidebar';
@@ -21,7 +22,7 @@ function ProtectedLayout() {
   const { isAuthenticated } = useAuth();
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   return (
-    <div className="flex min-h-screen" style={{ background: '#010509' }}>
+    <div className="flex min-h-screen" style={{ background: 'var(--bg-primary)' }}>
       <Sidebar />
       <div className="flex-1 ml-[260px] flex flex-col">
         <TopBar />
@@ -42,6 +43,15 @@ function HomePage() {
 
 export default function App() {
   const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('transitops_theme');
+    const isDark = savedTheme ? savedTheme === 'dark' : true;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

@@ -67,17 +67,23 @@ router.post('/login', (req: Request, res: Response) => {
 router.post('/register', (req: Request, res: Response) => {
   try {
     const { name, email, password, role } = req.body;
-    if (!name || !email || !password || !role) {
-      res.status(400).json({ error: 'Name, email, password, and role are required' });
+    if (!name || !email || !password) {
+      res.status(400).json({ error: 'Name, email and password are required' });
       return;
     }
-
-    const validRoles = ['fleet_manager', 'driver', 'safety_officer', 'financial_analyst'];
-    if (!validRoles.includes(role)) {
+    if (!role || role === 'select_role') {
+      res.status(400).json({ error: 'Role not selected' });
+      return;
+    }
+    const allowedRoles = ['fleet_manager', 'driver', 'safety_officer', 'financial_analyst'];
+    if (!allowedRoles.includes(role)) {
       res.status(400).json({ error: 'Invalid role selected' });
       return;
     }
-
+    if (password.length < 6) {
+      res.status(400).json({ error: 'Password must be at least 6 characters long' });
+      return;
+    }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       res.status(400).json({ error: 'Invalid email address format' });
@@ -88,7 +94,6 @@ router.post('/register', (req: Request, res: Response) => {
       res.status(400).json({ error: 'Password must be at least 6 characters long' });
       return;
     }
-
     const db = getDb();
     
     // Check if user already exists
