@@ -23,6 +23,21 @@
   padding: 0 8px;
 }
 
+.brand-logo-wrapper {
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .brand-mark,
 .ui-icon,
 .avatar {

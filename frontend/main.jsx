@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import './App.css';
+import logo from './src/assets/logo.png';
 
 const vehicles = [
   { reg: 'MH 12 AB 4521', model: 'Tata Signa 4825', type: 'Container', status: 'Available', health: 92, capacity: '48T', next: 'Jul 18' },
@@ -47,7 +48,9 @@ function App() {
     <main className="ops-shell">
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-mark"><Icon name="T" /></div>
+          <div className="brand-mark brand-logo-wrapper">
+            <img src={logo} alt="TransitOps logo" className="brand-logo" />
+          </div>
           <div>
             <strong>TransitOps</strong>
             <span>Smart Transport</span>
