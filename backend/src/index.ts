@@ -15,7 +15,7 @@ import expenseRoutes from './routes/expense.routes';
 import dashboardRoutes from './routes/dashboard.routes';
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = Number(process.env.PORT || process.env.BACKEND_PORT || 3001);
 
 // Middleware
 app.use(cors());
@@ -50,9 +50,19 @@ async function start() {
     runMigrations();
     console.log('✅ Database initialized and migrations applied');
 
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
         console.log(`🚀 TransitOps API running on http://localhost:${PORT}`);
         console.log(`📋 Health check: http://localhost:${PORT}/api/health`);
+    });
+
+    server.on('error', (err: NodeJS.ErrnoException) => {
+        if (err.code === 'EADDRINUSE') {
+            console.error(`❌ Port ${PORT} is already in use. Stop the existing process or start with PORT=3002.`);
+            process.exit(1);
+        }
+
+        console.error('❌ Failed to start server:', err);
+        process.exit(1);
     });
 }
 

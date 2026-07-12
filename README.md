@@ -52,6 +52,18 @@ npm run dev
 - Backend API: `http://localhost:3001`
 - Health check: `http://localhost:3001/api/health`
 
+If port `3001` is already in use, start the backend on another port and point Vite at the same port:
+
+```powershell
+cd backend
+$env:PORT = "3002"
+npm run dev
+
+cd ..\frontend
+$env:VITE_BACKEND_PORT = "3002"
+npm run dev
+```
+
 ## Seed Demo Data
 
 The backend includes a seed script that populates demo users and sample fleet data.
@@ -140,5 +152,5 @@ Password for all demo accounts:
 
 - The backend stores data in `backend/transitops.db`.
 - If login fails, make sure the backend is running and the database has been seeded.
-- The frontend proxies `/api` requests to `http://localhost:3001`.
+- The frontend proxies `/api` requests to `http://localhost:3001` by default.
 
