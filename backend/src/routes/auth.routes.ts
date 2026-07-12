@@ -86,19 +86,6 @@ router.post('/register', (req: Request, res: Response) => {
 
     if (password.length < 6) {
       res.status(400).json({ error: 'Password must be at least 6 characters long' });
-    if (!name || !email || !password) {
-      res.status(400).json({ error: 'Name, email and password are required' });
-      return;
-    }
-
-    if (!role || role === 'select_role') {
-      res.status(400).json({ error: 'Role not selected' });
-      return;
-    }
-
-    const allowedRoles = ['fleet_manager', 'driver', 'safety_officer', 'financial_analyst'];
-    if (!allowedRoles.includes(role)) {
-      res.status(400).json({ error: 'Invalid role selected' });
       return;
     }
 
@@ -115,7 +102,7 @@ router.post('/register', (req: Request, res: Response) => {
     ).run(name, email, passwordHash, role);
 
     const token = signToken({ id: result.lastInsertRowid, email, role, name });
-    
+
     res.status(201).json({
       token,
       user: { id: result.lastInsertRowid, name, email, role }
