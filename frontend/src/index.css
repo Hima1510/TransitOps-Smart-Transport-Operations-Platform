@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-@theme {
+:root {
   --color-primary-50: #eff6ff;
   --color-primary-100: #dbeafe;
   --color-primary-200: #bfdbfe;
@@ -120,8 +120,8 @@
     border: 1px solid var(--border-color);
     border-radius: 16px;
     box-shadow: var(--shadow-card);
-    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
     transition: border-color 0.2s, box-shadow 0.3s;
   }
   .card:hover {
@@ -233,8 +233,8 @@
   gap: 10px;
   min-width: 320px;
   animation: slideIn 0.3s ease-out;
-  backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .toast-success { background: rgba(5, 150, 105, 0.9); color: white; }
@@ -357,8 +357,8 @@ select.input-field {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -381,8 +381,8 @@ select.input-field {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   z-index: 1000;
   animation: fadeIn 0.2s ease-out;
 }
@@ -512,18 +512,19 @@ select.input-field {
   box-shadow: inset 0 0 10px rgba(173,70,255,0.2), 0 0 10px rgba(152,16,250,0.12);
 }
 
-.orb-ring::before {
-  content: '';
-  position: absolute;
-  inset: -1.5px;
-  border-radius: 50%;
-  padding: 1.5px;
-  background: linear-gradient(90deg, rgba(173,70,255,0) 0%, rgba(173,70,255,0.7) 50%, rgba(152,16,250,0) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
+  .orb-ring::before {
+    content: '';
+    position: absolute;
+    inset: -1.5px;
+    border-radius: 50%;
+    padding: 1.5px;
+    background: linear-gradient(90deg, rgba(173,70,255,0) 0%, rgba(173,70,255,0.7) 50%, rgba(152,16,250,0) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
 
 .orb-ring-1 { animation: orbSpin1 8s linear infinite; }
 .orb-ring-2 { animation: orbSpin2 10s linear infinite reverse; }
@@ -617,8 +618,8 @@ select.input-field {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   position: relative;
   overflow: hidden;
 }
